@@ -1,0 +1,2 @@
+# SzotarRobi
+Szó kikérdező alkalmazás
