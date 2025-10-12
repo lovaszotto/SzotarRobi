@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szótár-Robi App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+        }
+        .top-buttons {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+        }
+        .bottom-right {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+        }
+        .timer {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background-color: #343a40;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .config-link {
+            display: none;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            width: 90%;
+            max-width: 800px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .top-buttons button {
+            margin: 0;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .bottom-right button {
+            margin: 0;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .load-lesson-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .load-lesson-btn:hover {
+            background-color: #218838;
+        }
+        .exit-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .exit-btn:hover {
+            background-color: #c82333;
+        }
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .input-group {
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            margin: 20px 0;
+        }
+        .input-group input {
+            display: block;
+            width: 90%;
+            margin: 8px auto;
+        }
+        .file-info {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 16px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #495057;
+            font-size: 20px;
+            display: block;
+        }
+        .character-palette {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-width: 300px;
+            display: none;
+        }
+        .character-palette.show {
+            display: block;
+        }
+        .palette-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .palette-title {
+            font-weight: bold;
+            color: #495057;
+            font-size: 16px;
+        }
+        .palette-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #6c757d;
+            padding: 0;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .palette-close:hover {
+            background-color: #f8f9fa;
+            color: #495057;
+        }
+        .character-group {
+            margin-bottom: 15px;
+        }
+        .character-group:last-child {
+            margin-bottom: 0;
+        }
+        .character-group-title {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .character-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .char-btn {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 16px;
+            min-width: 40px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .char-btn:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+            transform: translateY(-1px);
+        }
+        .char-btn:active {
+            transform: translateY(0);
+            background-color: #007bff;
+            color: white;
+        }
+        .palette-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+        .palette-toggle:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+        .palette-toggle.active {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <!-- Lecke betöltése gomb bal felső sarokban -->
+
+    <!-- ...existing code... -->
+    <div class="container">
+        <div class="top-buttons">
+            <button type="button" id="loadLessonBtn" class="load-lesson-btn">Lecke betöltése</button>
+        </div>
+
+        <!-- Jobb felső sarokban ikonok -->
+        <div style="position: absolute; top: 18px; right: 24px; z-index: 1000; display: flex; gap: 16px;">
+            <span id="iconMail" title="Levél" style="font-size: 24px; cursor: not-allowed; opacity: 0.5;">✉️</span>
+            <span id="iconHelp" title="Súgó / Példa" style="font-size: 26px; cursor: not-allowed; opacity: 0.5;">❓</span>
+        </div>
+        <!-- Lebegő karakterpaletta toggle gomb -->
+        <button id="paletteToggle" class="palette-toggle" title="Speciális karakterek paletta">✏️</button>
+        
+        <!-- Lebegő karakterpaletta -->
+        <div id="characterPalette" class="character-palette">
+            <div class="palette-header">
+                <span class="palette-title">Speciális karakterek</span>
+                <button id="paletteCaps" class="char-btn" style="font-size:15px;min-width:unset;padding:6px 10px;margin-right:8px;background:#f1f3f4;" title="Nagybetű/ kisbetű váltás">Caps</button>
+                <button class="palette-close" id="paletteClose" title="Bezárás">×</button>
+            </div>
+            
+            <div class="character-group">
+                <div class="character-group-title">🇫🇷 Francia</div>
+                <div class="character-buttons">
+                    <button class="char-btn" data-char="à">à</button>
+                    <button class="char-btn" data-char="â">â</button>
+                    <button class="char-btn" data-char="ä">ä</button>
+                    <button class="char-btn" data-char="é">é</button>
+                    <button class="char-btn" data-char="è">è</button>
+                    <button class="char-btn" data-char="ê">ê</button>
+                    <button class="char-btn" data-char="ë">ë</button>
+                    <button class="char-btn" data-char="î">î</button>
+                    <button class="char-btn" data-char="ï">ï</button>
+                    <button class="char-btn" data-char="ô">ô</button>
+                    <button class="char-btn" data-char="ö">ö</button>
+                    <button class="char-btn" data-char="ù">ù</button>
+                    <button class="char-btn" data-char="û">û</button>
+                    <button class="char-btn" data-char="ü">ü</button>
+                    <button class="char-btn" data-char="ÿ">ÿ</button>
+                    <button class="char-btn" data-char="ç">ç</button>
+                </div>
+            </div>
+            
+            <div class="character-group">
+                <div class="character-group-title">🇩🇪 Német</div>
+                <div class="character-buttons">
+                    <button class="char-btn" data-char="ä">ä</button>
+                    <button class="char-btn" data-char="Ä">Ä</button>
+                    <button class="char-btn" data-char="ö">ö</button>
+                    <button class="char-btn" data-char="Ö">Ö</button>
+                    <button class="char-btn" data-char="ü">ü</button>
+                    <button class="char-btn" data-char="Ü">Ü</button>
+                    <button class="char-btn" data-char="ß">ß</button>
+                </div>
+            </div>
+            
+            <div class="character-group">
+                <div class="character-group-title">🇳🇱 Holland</div>
+                <div class="character-buttons">
+                    <button class="char-btn" data-char="ä">ä</button>
+                    <button class="char-btn" data-char="ë">ë</button>
+                    <button class="char-btn" data-char="ï">ï</button>
+                    <button class="char-btn" data-char="ö">ö</button>
+                    <button class="char-btn" data-char="ü">ü</button>
+                    <button class="char-btn" data-char="ij">ij</button>
+                </div>
+            </div>
+            
+            <div class="character-group">
+                <div class="character-group-title">🇪🇸 Spanyol</div>
+                <div class="character-buttons">
+                    <button class="char-btn" data-char="á">á</button>
+                    <button class="char-btn" data-char="é">é</button>
+                    <button class="char-btn" data-char="í">í</button>
+                    <button class="char-btn" data-char="ó">ó</button>
+                    <button class="char-btn" data-char="ú">ú</button>
+                    <button class="char-btn" data-char="ñ">ñ</button>
+                    <button class="char-btn" data-char="ü">ü</button>
+                    <button class="char-btn" data-char="¿">¿</button>
+                    <button class="char-btn" data-char="¡">¡</button>
+                </div>
+            </div>
+        </div>
+
+        
+
+        
+        <!-- Kilépés gomb jobb alsó sarokban -->
+        <div class="bottom-right" style="display: none;">
+            <button type="button" id="exitBtn" class="exit-btn">Kilépés</button>
+        </div>
+        
+        <!-- Időzítő bal alsó sarokban -->
+
+        <div id="timer" class="timer" style="display: none;">00:00:00</div>
+
+        <!-- Fő csoport a Kérdés és Válasz mezőkkel előtt: Kiválasztott fájl információ -->
+        <div id="fileInfo" class="file-info">
+            Szótár-Robi
+        </div>
+
+        
+        <!-- Fő csoport a Kérdés és Válasz mezőkkel -->
+        <br>
+        <div class="form-group input-group">
+            <label id="fileGroupLabel" style="display: block; margin-bottom: 10px; font-weight: bold; color: #495057;">Nincs fájl kiválasztva</label>
+            
+            <!-- Jó Tanulást! inaktív input mezőben -->
+            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                <label for="helloWorldInput" style="width: 100px; margin-right: 10px; font-weight: normal; color: #6c757d; font-size: 16px; text-align: right;">Kérdés:</label>
+                <input type="text" id="helloWorldInput" value="Jó tanulást!" readonly style="text-align: left; font-size: 18px; font-weight: bold; background-color: #f8f9fa; border: 2px solid #dee2e6; flex: 1; max-width: 700px;">
+            </div>
+            
+            <form id="mainForm">
+                <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                    <label for="userInput" style="width: 100px; margin-right: 10px; font-weight: normal; color: #6c757d; font-size: 16px; text-align: right;">Válasz:</label>
+                    <input type="text" id="userInput" name="userInput" placeholder="Írj be valamit... és nyomd meg az Entert" required style="flex: 1; max-width: 700px; padding: 10px; font-size: 16px; border: 2px solid #ddd; border-radius: 5px;">
+                </div>
+                
+                <!-- Rejtett submit gomb az Enter lenyomás kezeléséhez -->
+                <button type="submit" style="display: none;" id="hiddenSubmit">Submit</button>
+                
+                <!-- Következő gomb és statisztika mezők egy sorban -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-left: 110px; margin-bottom: 20px; gap: 20px;">
+                    <!-- Eredmény label és statisztika mezők group-ban -->
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label style="font-size: 14px; font-weight: bold; color: #495057;">Eredmény:</label>
+                        <fieldset style="border: 1px solid #ced4da; border-radius: 5px; padding: 8px; margin: 0; display: flex; gap: 8px; align-items: center; background-color: #f8f9fa;">
+                            <div style="display: flex; align-items: center; gap: 3px;">
+                                <label style="font-size: 11px; color: #6c757d; white-space: nowrap;">Helyes:</label>
+                                <input type="text" id="helyesValasz" readonly style="width: 50px; padding: 3px; font-size: 11px; border: 1px solid #ced4da; border-radius: 3px; background-color: white; text-align: center;" value="0">
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 3px;">
+                                <label style="font-size: 11px; color: #6c757d; white-space: nowrap;">Hibás:</label>
+                                <input type="text" id="hibasValasz" readonly style="width: 50px; padding: 3px; font-size: 11px; border: 1px solid #ced4da; border-radius: 3px; background-color: white; text-align: center;" value="0">
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 3px;">
+                                <label style="font-size: 11px; color: #6c757d; white-space: nowrap;">Kérdés:</label>
+                                <input type="text" id="beolvasottKerdes" readonly style="width: 50px; padding: 3px; font-size: 11px; border: 1px solid #ced4da; border-radius: 3px; background-color: white; text-align: center;" value="0">
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 3px;">
+                                <label style="font-size: 11px; color: #6c757d; white-space: nowrap;">Arány:</label>
+                                <input type="text" id="helyesAranya" readonly style="width: 60px; padding: 3px; font-size: 11px; border: 1px solid #ced4da; border-radius: 3px; background-color: white; text-align: center;" value="0%">
+                            </div>
+                        </fieldset>
+                    </div>
+                    
+                    <button type="button" id="nextBtn" style="background-color: #28a745; color: white; padding: 8px 16px; font-size: 14px; border: none; border-radius: 5px; cursor: pointer; height: 36px;">Következő</button>
+                </div>
+            </form>
+            
+            <!-- Sikeres beküldés üzenet -->
+            <div id="message" class="message success">
+                Helyes válasz!
+            </div>
+        </div>
+            
+            <!-- Új group 3 inaktív input mezővel -->
+            <div class="form-group input-group" id="exampleGroup" style="display: none;">
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <label for="inactiveInput1" style="width: 100px; margin-right: 10px; font-weight: normal; color: #6c757d; font-size: 14px; text-align: right;">Példa:</label>
+                    <input type="text" id="inactiveInput1" readonly style="background-color: #ffffff; border: 1px solid #ced4da; flex: 1; max-width: 700px;">
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <label for="inactiveInput2" style="width: 100px; margin-right: 10px; font-weight: normal; color: #6c757d; font-size: 14px; text-align: right;">Kiejtés:</label>
+                    <input type="text" id="inactiveInput2" readonly style="background-color: #ffffff; border: 1px solid #ced4da; flex: 1; max-width: 700px;">
+                </div>
+                <div style="display: flex; align-items: flex-start; margin-bottom: 8px;">
+                    <label for="inactiveInput3" style="width: 100px; margin-right: 10px; font-weight: normal; color: #6c757d; font-size: 14px; text-align: right; margin-top: 8px;">Megjegyzés:</label>
+                    <textarea id="inactiveInput3" disabled style="background-color: #ffffff; border: 1px solid #ced4da; flex: 1; max-width: 700px; min-height: 60px; resize: vertical; padding: 8px; font-family: Arial, sans-serif; font-size: 14px;"></textarea>
+                </div>
+            </div>
+            
+            <!-- Válasz mező a legalsó sorban középen - rejtett alapértelmezetten -->
+            <div class="form-group" id="answerSection" style="text-align: center; margin-top: 30px; display: none;">
+                <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                    <label for="answerInput" style="width: 100px; margin-right: 10px; font-weight: normal; color: #6c757d; font-size: 14px; text-align: right;">Helyes válasz:</label>
+                    <input type="text" id="answerInput" readonly style="background-color: #ffffff; border: 1px solid #ced4da; max-width: 700px; width: 600px; padding: 8px; font-size: 14px;">
+                </div>
+            </div>
+            
+            <!-- Rejtett file input XLSX fájlokhoz -->
+            <input type="file" id="fileInput" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" style="display: none;">
+            
+            <!-- Debug információ a fájl típusokról -->
+            <div id="debugInfo" style="display: none; margin-top: 10px; padding: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6; font-family: monospace; font-size: 12px;"></div>
+            
+            <!-- Alsó gombsor - minden gomb egy sorban -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding: 20px 0; border-top: 1px solid #dee2e6; flex-wrap: wrap; gap: 10px;">
+                <!-- Bal oldal: Timer -->
+                <div id="timerBottom" class="timer" style="position: relative; bottom: auto; left: auto; background-color: #343a40; color: white; padding: 8px 12px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 14px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">00:00:00</div>
+
+                <!-- Középen: Helyes/Hibás válaszok bar chart -->
+                <div style="flex: 1; display: flex; justify-content: center; align-items: center; min-width: 220px;">
+                    <canvas id="answerBarChart" width="260" height="44" style="max-width: 320px;"></canvas>
+                </div>
+
+                <!-- Jobb oldal: Kilépés gomb -->
+                <button type="button" id="exitBtnBottom" class="exit-btn" style="background-color: #dc3545; color: white; padding: 8px 16px; font-size: 14px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#c82333'" onmouseout="this.style.backgroundColor='#dc3545'">Kilépés</button>
+            </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        // Jobb felső sarok kérdőjel ikon: Példa group toggle
+        // Segédfüggvény az ikonok aktiválásához/inaktiválásához
+        function setIconsActive(active) {
+            const iconMail = document.getElementById('iconMail');
+            const iconHelp = document.getElementById('iconHelp');
+            if (active) {
+                iconMail.style.opacity = '';
+                iconMail.style.cursor = 'pointer';
+                iconHelp.style.opacity = '';
+                iconHelp.style.cursor = 'pointer';
+                iconMail.classList.remove('inactive');
+                iconHelp.classList.remove('inactive');
+            } else {
+                iconMail.style.opacity = '0.5';
+                iconMail.style.cursor = 'not-allowed';
+                iconHelp.style.opacity = '0.5';
+                iconHelp.style.cursor = 'not-allowed';
+                iconMail.classList.add('inactive');
+                iconHelp.classList.add('inactive');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var iconHelp = document.getElementById('iconHelp');
+            var iconMail = document.getElementById('iconMail');
+            var exampleGroup = document.getElementById('exampleGroup');
+            if (iconHelp && exampleGroup) {
+                iconHelp.addEventListener('click', function() {
+                    if (exampleGroup.style.display === 'none' || exampleGroup.style.display === '') {
+                        exampleGroup.style.display = 'block';
+                    } else {
+                        exampleGroup.style.display = 'none';
+                    }
+                });
+            }
+
+            // Levél ikon popup
+            if (iconMail) {
+                iconMail.addEventListener('click', function() {
+                    if (iconMail.classList.contains('inactive')) return;
+
+                    // Popup háttér
+                    const popupBg = document.createElement('div');
+                    popupBg.style.position = 'fixed';
+                    popupBg.style.top = '0';
+                    popupBg.style.left = '0';
+                    popupBg.style.width = '100vw';
+                    popupBg.style.height = '100vh';
+                    popupBg.style.background = 'rgba(0,0,0,0.3)';
+                    popupBg.style.zIndex = '9999';
+                    popupBg.style.display = 'flex';
+                    popupBg.style.alignItems = 'center';
+                    popupBg.style.justifyContent = 'center';
+
+                    // Popup ablak
+                    const popup = document.createElement('div');
+                    popup.style.background = '#fff';
+                    popup.style.padding = '28px 24px 18px 24px';
+                    popup.style.borderRadius = '12px';
+                    popup.style.boxShadow = '0 4px 24px rgba(0,0,0,0.18)';
+                    popup.style.maxWidth = '440px';
+                    popup.style.width = '95%';
+                    popup.style.textAlign = 'center';
+                    popup.style.position = 'absolute';
+                    popup.style.left = '50%';
+                    popup.style.top = '50%';
+                    popup.style.transform = 'translate(-50%, -50%)';
+
+
+                    // Fejléc
+                    const header = document.createElement('div');
+                    header.textContent = 'Levél küldése';
+                    header.style.fontWeight = 'bold';
+                    header.style.fontSize = '18px';
+                    header.style.marginBottom = '10px';
+                    popup.appendChild(header);
+
+                    // Fájlnév input mező
+                    // Fájl: label + input egy sorban
+                    const fileRow = document.createElement('div');
+                    fileRow.style.display = 'flex';
+                    fileRow.style.alignItems = 'center';
+                    fileRow.style.marginBottom = '10px';
+                    const fileNameLabel = document.createElement('label');
+                    fileNameLabel.textContent = 'Fájl:';
+                    fileNameLabel.style.width = '80px';
+                    fileNameLabel.style.marginRight = '8px';
+                    fileNameLabel.style.textAlign = 'right';
+                    fileNameLabel.style.fontWeight = 'normal';
+                    const fileNameInput = document.createElement('input');
+                    fileNameInput.type = 'text';
+                    // szerkeszthető
+                    fileNameInput.style.flex = '1';
+                    fileNameInput.style.background = '#f8f9fa';
+                    fileNameInput.style.border = '1px solid #ced4da';
+                    fileNameInput.style.borderRadius = '5px';
+                    fileNameInput.style.padding = '8px';
+                    // Fájl név meghatározása: ha van betöltött fájl, akkor annak a nevét mutatjuk
+                    let loadedFileName = '';
+                    const fileGroupLabel = document.getElementById('fileGroupLabel');
+                    if (fileGroupLabel && fileGroupLabel.textContent && fileGroupLabel.textContent !== 'Nincs lecke kiválasztva') {
+                        loadedFileName = fileGroupLabel.textContent;
+                    }
+                    fileNameInput.value = loadedFileName;
+                    fileRow.appendChild(fileNameLabel);
+                    fileRow.appendChild(fileNameInput);
+                    popup.appendChild(fileRow);
+
+                    // Kérdés mező
+                    // Kérdés: label + input egy sorban
+                    const kerdesRow = document.createElement('div');
+                    kerdesRow.style.display = 'flex';
+                    kerdesRow.style.alignItems = 'center';
+                    kerdesRow.style.marginBottom = '10px';
+                    const kerdesLabel = document.createElement('label');
+                    kerdesLabel.textContent = 'Kérdés:';
+                    kerdesLabel.style.width = '80px';
+                    kerdesLabel.style.marginRight = '8px';
+                    kerdesLabel.style.textAlign = 'right';
+                    kerdesLabel.style.fontWeight = 'normal';
+                    const kerdesInput = document.createElement('input');
+                    kerdesInput.type = 'text';
+                    // szerkeszthető
+                    kerdesInput.style.flex = '1';
+                    kerdesInput.style.background = '#f8f9fa';
+                    kerdesInput.style.border = '1px solid #ced4da';
+                    kerdesInput.style.borderRadius = '5px';
+                    kerdesInput.style.padding = '8px';
+                    kerdesRow.appendChild(kerdesLabel);
+                    kerdesRow.appendChild(kerdesInput);
+                    popup.appendChild(kerdesRow);
+
+                    // Válasz mező
+                    // Válasz: label + input egy sorban
+                    const valaszRow = document.createElement('div');
+                    valaszRow.style.display = 'flex';
+                    valaszRow.style.alignItems = 'center';
+                    valaszRow.style.marginBottom = '10px';
+                    const valaszLabel = document.createElement('label');
+                    valaszLabel.textContent = 'Válasz:';
+                    valaszLabel.style.width = '80px';
+                    valaszLabel.style.marginRight = '8px';
+                    valaszLabel.style.textAlign = 'right';
+                    valaszLabel.style.fontWeight = 'normal';
+                    const valaszInput = document.createElement('input');
+                    valaszInput.type = 'text';
+                    // szerkeszthető
+                    valaszInput.style.flex = '1';
+                    valaszInput.style.background = '#f8f9fa';
+                    valaszInput.style.border = '1px solid #ced4da';
+                    valaszInput.style.borderRadius = '5px';
+                    valaszInput.style.padding = '8px';
+                    valaszRow.appendChild(valaszLabel);
+                    valaszRow.appendChild(valaszInput);
+                    popup.appendChild(valaszRow);
+
+                    // Példa mező
+                    // Példa: label + input egy sorban
+                    const peldaRow = document.createElement('div');
+                    peldaRow.style.display = 'flex';
+                    peldaRow.style.alignItems = 'center';
+                    peldaRow.style.marginBottom = '10px';
+                    const peldaLabel = document.createElement('label');
+                    peldaLabel.textContent = 'Példa:';
+                    peldaLabel.style.width = '80px';
+                    peldaLabel.style.marginRight = '8px';
+                    peldaLabel.style.textAlign = 'right';
+                    peldaLabel.style.fontWeight = 'normal';
+                    const peldaInput = document.createElement('input');
+                    peldaInput.type = 'text';
+                    // szerkeszthető
+                    peldaInput.style.flex = '1';
+                    peldaInput.style.background = '#f8f9fa';
+                    peldaInput.style.border = '1px solid #ced4da';
+                    peldaInput.style.borderRadius = '5px';
+                    peldaInput.style.padding = '8px';
+                    peldaRow.appendChild(peldaLabel);
+                    peldaRow.appendChild(peldaInput);
+                    popup.appendChild(peldaRow);
+
+                    // Kiejtés mező
+                    // Kiejtés: label + input egy sorban
+                    const kiejtesRow = document.createElement('div');
+                    kiejtesRow.style.display = 'flex';
+                    kiejtesRow.style.alignItems = 'center';
+                    kiejtesRow.style.marginBottom = '10px';
+                    const kiejtesLabel = document.createElement('label');
+                    kiejtesLabel.textContent = 'Kiejtés:';
+                    kiejtesLabel.style.width = '80px';
+                    kiejtesLabel.style.marginRight = '8px';
+                    kiejtesLabel.style.textAlign = 'right';
+                    kiejtesLabel.style.fontWeight = 'normal';
+                    const kiejtesInput = document.createElement('input');
+                    kiejtesInput.type = 'text';
+                    // szerkeszthető
+                    kiejtesInput.style.flex = '1';
+                    kiejtesInput.style.background = '#f8f9fa';
+                    kiejtesInput.style.border = '1px solid #ced4da';
+                    kiejtesInput.style.borderRadius = '5px';
+                    kiejtesInput.style.padding = '8px';
+                    kiejtesRow.appendChild(kiejtesLabel);
+                    kiejtesRow.appendChild(kiejtesInput);
+                    popup.appendChild(kiejtesRow);
+
+                    // Megjegyzés mező
+                    // Megjegyzés: label a textarea felett
+                    const megjegyzesRow = document.createElement('div');
+                    megjegyzesRow.style.display = 'flex';
+                    megjegyzesRow.style.flexDirection = 'column';
+                    megjegyzesRow.style.marginBottom = '16px';
+                    const megjegyzesLabel = document.createElement('label');
+                    megjegyzesLabel.textContent = 'Megjegyzés:';
+                    megjegyzesLabel.style.marginBottom = '4px';
+                    megjegyzesLabel.style.textAlign = 'left';
+                    megjegyzesLabel.style.fontWeight = 'normal';
+                    const megjegyzesInput = document.createElement('textarea');
+                    // szerkeszthető
+                    megjegyzesInput.style.background = '#f8f9fa';
+                    megjegyzesInput.style.border = '1px solid #ced4da';
+                    megjegyzesInput.style.borderRadius = '5px';
+                    megjegyzesInput.style.padding = '8px';
+                    megjegyzesInput.style.minHeight = '48px';
+                    megjegyzesInput.style.fontSize = '14px';
+                    megjegyzesRow.appendChild(megjegyzesLabel);
+                    megjegyzesRow.appendChild(megjegyzesInput);
+                    popup.appendChild(megjegyzesRow);
+
+                    // Sorszám mező az email előtt
+                    const sorszamRow = document.createElement('div');
+                    sorszamRow.style.display = 'flex';
+                    sorszamRow.style.alignItems = 'center';
+                    sorszamRow.style.marginBottom = '10px';
+                    const sorszamLabel = document.createElement('label');
+                    sorszamLabel.textContent = 'Sor:';
+                    sorszamLabel.style.width = '80px';
+                    sorszamLabel.style.marginRight = '8px';
+                    sorszamLabel.style.textAlign = 'right';
+                    sorszamLabel.style.fontWeight = 'normal';
+                    const sorszamInput = document.createElement('input');
+                    sorszamInput.type = 'text';
+                    sorszamInput.style.flex = '1';
+                    sorszamInput.style.background = '#f8f9fa';
+                    sorszamInput.style.border = '1px solid #ced4da';
+                    sorszamInput.style.borderRadius = '5px';
+                    sorszamInput.style.padding = '8px';
+                    // Sorszám érték beállítása (aktuális kérdés excelbeli sorszáma)
+                    let sorszamValue = '';
+                    if (typeof window.currentQuestionIndex !== 'undefined') {
+                        // Excelben: első sor a fejléc, ezért +2 (1 alapú, plusz fejléc)
+                        sorszamValue = (window.currentQuestionIndex + 2).toString();
+                    }
+                    sorszamInput.value = sorszamValue;
+                    sorszamRow.appendChild(sorszamLabel);
+                    sorszamRow.appendChild(sorszamInput);
+                    popup.appendChild(sorszamRow);
+
+                    // Email mező a megjegyzés alatt
+                    const emailRow = document.createElement('div');
+                    emailRow.style.display = 'flex';
+                    emailRow.style.alignItems = 'center';
+                    emailRow.style.marginBottom = '16px';
+                    const emailLabel = document.createElement('label');
+                    emailLabel.textContent = 'Email:';
+                    emailLabel.style.width = '80px';
+                    emailLabel.style.marginRight = '8px';
+                    emailLabel.style.textAlign = 'right';
+                    emailLabel.style.fontWeight = 'normal';
+                    const emailInput = document.createElement('input');
+                    emailInput.type = 'email';
+                    emailInput.value = 'lovasz.otto@clarity.hu';
+                    emailInput.style.flex = '1';
+                    emailInput.style.background = '#f8f9fa';
+                    emailInput.style.border = '1px solid #ced4da';
+                    emailInput.style.borderRadius = '5px';
+                    emailInput.style.padding = '8px';
+                    emailRow.appendChild(emailLabel);
+                    emailRow.appendChild(emailInput);
+                    popup.appendChild(emailRow);
+
+                    // Aktuális értékek betöltése
+                    kerdesInput.value = document.getElementById('helloWorldInput')?.value || '';
+                    valaszInput.value = document.getElementById('answerInput')?.value || '';
+                    peldaInput.value = document.getElementById('inactiveInput1')?.value || '';
+                    kiejtesInput.value = document.getElementById('inactiveInput2')?.value || '';
+                    megjegyzesInput.value = document.getElementById('inactiveInput3')?.value || '';
+
+                    // Gombok
+                    const btnRow = document.createElement('div');
+                    btnRow.style.display = 'flex';
+                    btnRow.style.justifyContent = 'center';
+                    btnRow.style.gap = '12px';
+
+                    const sendBtn = document.createElement('button');
+                    sendBtn.textContent = 'Levél küldés';
+                    sendBtn.style.background = '#007bff';
+                    sendBtn.style.color = '#fff';
+                    sendBtn.style.border = 'none';
+                    sendBtn.style.borderRadius = '5px';
+                    sendBtn.style.padding = '8px 18px';
+                    sendBtn.style.fontSize = '15px';
+                    sendBtn.style.cursor = 'pointer';
+
+                    const cancelBtn = document.createElement('button');
+                    cancelBtn.textContent = 'Mégsem';
+                    cancelBtn.style.background = '#6c757d';
+                    cancelBtn.style.color = '#fff';
+                    cancelBtn.style.border = 'none';
+                    cancelBtn.style.borderRadius = '5px';
+                    cancelBtn.style.padding = '8px 18px';
+                    cancelBtn.style.fontSize = '15px';
+                    cancelBtn.style.cursor = 'pointer';
+
+                    cancelBtn.addEventListener('click', function() {
+                        document.body.removeChild(popupBg);
+                    });
+                    sendBtn.addEventListener('click', function() {
+                        // Levél küldése: mezők összegyűjtése
+                        const fileValue = fileNameInput.value || '';
+                        const kerdesValue = kerdesInput.value || '';
+                        const valaszValue = valaszInput.value || '';
+                        const peldaValue = peldaInput.value || '';
+                        const kiejtesValue = kiejtesInput.value || '';
+                        const megjegyzesValue = megjegyzesInput.value || '';
+                        const sorszamValue = sorszamInput.value || '';
+                        const emailValue = emailInput.value || '';
+
+                        // Email tartalom összeállítása
+                        let body = '';
+                        body += 'Fájl: ' + fileValue + '\n';
+                        body += 'Sor: ' + sorszamValue + '\n\n';
+                        body += 'Kérdés: ' + kerdesValue + '\n';
+                        body += 'Válasz: ' + valaszValue + '\n';
+                        body += 'Példa: ' + peldaValue + '\n';
+                        body += 'Kiejtés: ' + kiejtesValue + '\n\n';
+                        body += 'Megjegyzés: ' + megjegyzesValue + '\n';
+
+                        // mailto link létrehozása
+                        const subject = encodeURIComponent('Szótár hibajegy');
+                        const mailBody = encodeURIComponent(body);
+                        const mailto = `mailto:${encodeURIComponent(emailValue)}?subject=${subject}&body=${mailBody}`;
+
+                        // Email kliens megnyitása
+                        window.location.href = mailto;
+
+                        // Popup bezárása
+                        document.body.removeChild(popupBg);
+                    });
+
+                    btnRow.appendChild(sendBtn);
+                    btnRow.appendChild(cancelBtn);
+
+                    // Mezők hozzáadása a popuphoz (csak a sorokat, nem külön label/input)
+                    popup.appendChild(kerdesRow);
+                    popup.appendChild(valaszRow);
+                    popup.appendChild(peldaRow);
+                    popup.appendChild(kiejtesRow);
+                    popup.appendChild(megjegyzesRow);
+                    popup.appendChild(btnRow);
+                    popupBg.appendChild(popup);
+                    document.body.appendChild(popupBg);
+                });
+            }
+        });
+        // Excel adatok tárolása
+        let currentExcelData = null;
+        let answeredQuestions = new Set(); // Helyesen megválaszolt kérdések indexei
+        
+        // Statisztika változók
+        let helyesValaszokSzama = 0;
+        let hibasValaszokSzama = 0;
+        let osszesKerdesSzam = 0;
+        
+        // Timer változók
+        let timerInterval = null;
+        let isTimerStopped = false;
+        
+        // Alkalmazás inicializálása
+        function initializeApp() {
+            // UI frissítése
+            const fileInfoDiv = document.getElementById('fileInfo');
+            const fileGroupLabel = document.getElementById('fileGroupLabel');
+            
+            fileInfoDiv.textContent = 'Szótár-Robi';
+            fileInfoDiv.style.display = 'block';
+            fileGroupLabel.textContent = 'Nincs lecke kiválasztva';
+            
+            // Statisztikák nullázása új indításkor
+            answeredQuestions.clear();
+            helyesValaszokSzama = 0;
+            hibasValaszokSzama = 0;
+            osszesKerdesSzam = 0;
+            updateStatisztikak();
+            
+            // Timer NE induljon el itt - csak lecke betöltésekor
+            
+            // Első indulás üzenet
+            const message = document.getElementById('message');
+            message.innerHTML = `Kattintson a "Lecke betöltése" gombra és válassza ki a lecke fájlt.`;
+            message.style.backgroundColor = '#d1ecf1';
+            message.style.color = '#0c5460';
+            message.style.border = '1px solid #bee5eb';
+            message.style.display = 'block';
+        }
+        
+
+        
+        // Bar chart változó
+        let answerBarChart = null;
+
+        // Statisztikák frissítése
+        function updateStatisztikak() {
+            document.getElementById('helyesValasz').value = helyesValaszokSzama;
+            document.getElementById('hibasValasz').value = hibasValaszokSzama;
+            // Fennmaradó kérdések száma = összes kérdés - helyesen megválaszolt kérdések
+            const fennmaradoKerdesek = currentExcelData ? (currentExcelData.length - 1) - answeredQuestions.size : 0;
+            document.getElementById('beolvasottKerdes').value = fennmaradoKerdesek;
+            let arany = 0;
+            if (osszesKerdesSzam > 0) {
+                arany = Math.round((helyesValaszokSzama / osszesKerdesSzam) * 100);
+            }
+            document.getElementById('helyesAranya').value = arany + '%';
+
+            // Bar chart frissítése
+            if (answerBarChart) {
+                answerBarChart.data.datasets[0].data = [helyesValaszokSzama, hibasValaszokSzama];
+                answerBarChart.update();
+            }
+        }
+
+        // Bar chart inicializálása
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('answerBarChart')?.getContext('2d');
+            if (ctx && window.Chart) {
+                answerBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['', 'Hibás'],
+                        datasets: [{
+                            label: '', // nincs label
+                            data: [helyesValaszokSzama, hibasValaszokSzama],
+                            backgroundColor: ['#28a745', '#dc3545'],
+                            borderRadius: 10,
+                            barPercentage: 1.0,
+                            categoryPercentage: 1.0,
+                            maxBarThickness: 44
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: true }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: { precision: 0 },
+                                grid: { display: false }
+                            },
+                            y: {
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        
+
+        
+        // Véletlenszerű kérdés betöltése az Excel adatokból
+        function loadRandomQuestion() {
+            console.log('loadRandomQuestion() függvény indítása...');
+            
+            if (!currentExcelData || currentExcelData.length <= 1) {
+                console.warn('Nincs betöltött Excel adat a kérdés betöltéshez');
+                return false;
+            }
+            
+            console.log('Excel adatok ellenőrizve, sorok száma:', currentExcelData.length);
+            
+            // Véletlenszerű sor kiválasztása (az első sort kihagyjuk, ha az fejléc)
+            const dataRows = currentExcelData.slice(1); // Fejléc nélkül
+            if (dataRows.length === 0) {
+                console.warn('Az Excel fájl nem tartalmaz adatsorokat');
+                return false;
+            }
+            
+            // Még meg nem válaszolt kérdések listája
+            const availableQuestions = [];
+            for (let i = 0; i < dataRows.length; i++) {
+                if (!answeredQuestions.has(i)) {
+                    availableQuestions.push(i);
+                }
+            }
+            
+            // Ha nincs több kérdés, jelezzük
+            if (availableQuestions.length === 0) {
+                // Aktuális időzítő értékének lekérése
+                const timerElement = document.getElementById('timerBottom');
+                const currentTime = timerElement ? timerElement.textContent : '00:00:00';
+                
+                const message = document.getElementById('message');
+                message.textContent = `Gratulálok! Minden kérdést helyesen megválaszoltál! Eltelt idő: ${currentTime}`;
+                message.style.backgroundColor = '#d4edda';
+                message.style.color = '#155724';
+                message.style.border = '1px solid #c3e6cb';
+                message.style.display = 'block';
+                console.log('Minden kérdés megválaszolva!');
+                
+                // Timer megállítása
+                stopTimer();
+                console.log('Timer megállítva - minden kérdés megválaszolva');
+                
+                return false;
+            }
+            
+            // Véletlenszerű kiválasztás a fennmaradó kérdések közül
+            const randomIndex = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+            const selectedRow = dataRows[randomIndex];
+            console.log('Kiválasztott sor index:', randomIndex, 'Sor adatok:', selectedRow);
+            
+            // Az aktuális kérdés indexének tárolása globálisan
+            window.currentQuestionIndex = randomIndex;
+            
+            // Oszlopok feltételezése: kerdes, megj1, megj2, megj3, valasz
+            // Ha a fejléc alapján szeretnénk meghatározni az oszlopokat:
+            const headers = currentExcelData[0] || [];
+            console.log('Excel fejlécek:', headers);
+            
+            let kerdesIndex = -1, megj1Index = -1, megj2Index = -1, megj3Index = -1, valaszIndex = -1;
+            
+            // Oszlopok keresése a fejlécben
+            headers.forEach((header, index) => {
+                const headerLower = (header || '').toString().toLowerCase();
+                if (headerLower.includes('kerdes') || headerLower.includes('kérdés') || headerLower.includes('question')) {
+                    kerdesIndex = index;
+                } else if (headerLower.includes('megj1') || headerLower.includes('példa') || headerLower.includes('example')) {
+                    megj1Index = index;
+                } else if (headerLower.includes('megj2') || headerLower.includes('kiejtés') || headerLower.includes('pronunciation')) {
+                    megj2Index = index;
+                } else if (headerLower.includes('megj3') || headerLower.includes('megjegyzés') || headerLower.includes('note')) {
+                    megj3Index = index;
+                } else if (headerLower.includes('valasz') || headerLower.includes('válasz') || headerLower.includes('answer')) {
+                    valaszIndex = index;
+                }
+            });
+            
+            // Ha nem találtuk meg az oszlopokat a fejléc alapján, használjunk alapértelmezett indexeket
+            if (kerdesIndex === -1) kerdesIndex = 0; // Első oszlop
+            if (megj1Index === -1) megj1Index = 1;   // Második oszlop
+            if (megj2Index === -1) megj2Index = 2;   // Harmadik oszlop
+            if (megj3Index === -1) megj3Index = 3;   // Negyedik oszlop
+            if (valaszIndex === -1) valaszIndex = 4; // Ötödik oszlop
+            
+            console.log('Oszlop indexek:', {kerdesIndex, megj1Index, megj2Index, megj3Index, valaszIndex});
+            
+            // DOM elemek ellenőrzése
+            const helloWorldInput = document.getElementById('helloWorldInput');
+            const inactiveInput1 = document.getElementById('inactiveInput1');
+            const inactiveInput2 = document.getElementById('inactiveInput2');
+            const inactiveInput3 = document.getElementById('inactiveInput3');
+            const answerInput = document.getElementById('answerInput');
+            const userInput = document.getElementById('userInput');
+            const answerSection = document.getElementById('answerSection');
+            const kerdesLabel = document.querySelector('label[for="helloWorldInput"]');
+
+            if (!helloWorldInput || !inactiveInput1 || !inactiveInput2 || !inactiveInput3 || !answerInput || !userInput || !kerdesLabel) {
+                console.error('Hiányzó DOM elemek!', {
+                    helloWorldInput: !!helloWorldInput,
+                    inactiveInput1: !!inactiveInput1,
+                    inactiveInput2: !!inactiveInput2,
+                    inactiveInput3: !!inactiveInput3,
+                    answerInput: !!answerInput,
+                    userInput: !!userInput,
+                    kerdesLabel: !!kerdesLabel
+                });
+                return false;
+            }
+
+            // Adatok kitöltése a mezőkbe
+            const kerdesValue = selectedRow[kerdesIndex] || '';
+            const megj1Value = selectedRow[megj1Index] || '';
+            const megj2Value = selectedRow[megj2Index] || '';
+            const megj3Value = selectedRow[megj3Index] || '';
+            const valaszValue = selectedRow[valaszIndex] || '';
+
+            console.log('Kitöltendő értékek:', {kerdesValue, megj1Value, megj2Value, megj3Value, valaszValue});
+
+            helloWorldInput.value = kerdesValue;
+            inactiveInput1.value = megj1Value;
+            inactiveInput2.value = megj2Value;
+            inactiveInput3.value = megj3Value;
+            answerInput.value = valaszValue;
+
+            // Válasz mező törlése
+            userInput.value = '';
+
+            // Helyes válasz mező elrejtése új kérdésnél
+            if (answerSection) {
+                answerSection.style.display = 'none';
+            }
+
+            // Kérdés label dinamikus frissítése: hányadik kérdést tettük fel (osszesKerdesSzam+1)
+            kerdesLabel.textContent = `Kérdés (${osszesKerdesSzam + 1}.)`;
+
+            console.log(`Új kérdés betöltve: ${randomIndex + 1}. sor, kérdés: "${kerdesValue}"`);
+            console.log(`Fennmaradó kérdések: ${availableQuestions.length}`);
+            return true;
+        }
+        
+        // Indulási idő rögzítése
+        const startTime = Date.now();
+        
+        // Alkalmazás indítása
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, alkalmazás inicializálása...');
+            initializeApp();
+            console.log('Alkalmazás inicializálás befejezve');
+        });
+        
+
+        // Pause/play ikon logika
+        function setAllInteractiveInactive(inactive) {
+            // Fő inputok, gombok, karakterpaletta, stb.
+            const ids = [
+                'userInput', 'nextBtn', 'loadLessonBtn', 'exitBtn', 'exitBtnBottom',
+                'paletteToggle', 'paletteCaps', 'paletteClose', 'fileInput', 'mainForm'
+            ];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
+                        el.disabled = inactive;
+                        el.style.opacity = inactive ? '0.5' : '';
+                        el.style.cursor = inactive ? 'not-allowed' : '';
+                    } else {
+                        el.style.pointerEvents = inactive ? 'none' : '';
+                        el.style.opacity = inactive ? '0.5' : '';
+                    }
+                }
+            });
+            // Karakterpaletta gombok
+            const charBtns = document.querySelectorAll('.char-btn');
+            charBtns.forEach(btn => {
+                btn.disabled = inactive;
+                btn.style.opacity = inactive ? '0.5' : '';
+                btn.style.cursor = inactive ? 'not-allowed' : '';
+            });
+        }
+
+        // Időzítő funkció
+        function updateTimer() {
+            if (isTimerStopped) return; // Ha a timer meg van állítva, ne frissítse
+            const currentTime = Date.now();
+            const elapsedTime = Math.floor((currentTime - startTime) / 1000); // másodpercekben
+            const hours = Math.floor(elapsedTime / 3600);
+            const minutes = Math.floor((elapsedTime % 3600) / 60);
+            const seconds = elapsedTime % 60;
+            const formattedTime = 
+                String(hours).padStart(2, '0') + ':' +
+                String(minutes).padStart(2, '0') + ':' +
+                String(seconds).padStart(2, '0');
+            // Frissítjük az új timer elemet
+            const timerElement = document.getElementById('timerBottom');
+            if (timerElement) {
+                timerElement.textContent = formattedTime;
+            }
+        }
+        
+
+        // Timer megállítása
+        function stopTimer() {
+            isTimerStopped = true;
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        // Timer folytatása
+        function resumeTimer() {
+            isTimerStopped = false;
+            if (!timerInterval) {
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+        }
+        
+
+        // Timer indítása (csak lecke betöltésekor)
+        function startTimer() {
+            if (!timerInterval && !isTimerStopped) {
+                timerInterval = setInterval(updateTimer, 1000);
+                updateTimer(); // Azonnali első frissítés
+                console.log('Timer elindítva lecke betöltéskor');
+            }
+        }
+
+        // Pause/play ikon hozzáadása az óra mellé
+        document.addEventListener('DOMContentLoaded', function() {
+            const timerElement = document.getElementById('timerBottom');
+            if (timerElement && !document.getElementById('pausePlayBtn')) {
+
+                // Közös wrapper div létrehozása, ha még nincs
+                let wrapper = timerElement.parentNode;
+                if (!timerElement.classList.contains('timer-pause-wrapper')) {
+                    wrapper = document.createElement('span');
+                    wrapper.style.display = 'inline-flex';
+                    wrapper.style.alignItems = 'center';
+                    wrapper.className = 'timer-pause-wrapper';
+                    timerElement.parentNode.insertBefore(wrapper, timerElement);
+                    // wrapper.appendChild(timerElement); // most nem először az óra, hanem először a gomb
+                }
+                // Ikon gomb létrehozása
+                const btn = document.createElement('button');
+                btn.id = 'pausePlayBtn';
+                btn.style.marginRight = '2px';
+                btn.style.background = 'none';
+                btn.style.border = 'none';
+                btn.style.cursor = 'pointer';
+                btn.style.fontSize = '22px';
+                btn.title = 'Szünet';
+                btn.style.height = '28px';
+                btn.style.lineHeight = '28px';
+                btn.style.padding = '0 4px';
+                btn.style.verticalAlign = 'middle';
+                btn.innerHTML = '<span id="pauseIcon">⏸️</span><span id="playIcon" style="display:none">▶️</span>';
+                // Először a gomb, utána az óra
+                wrapper.appendChild(btn);
+                wrapper.appendChild(timerElement);
+
+                btn.addEventListener('click', function() {
+                    const pauseIcon = document.getElementById('pauseIcon');
+                    const playIcon = document.getElementById('playIcon');
+                    if (!isTimerStopped) {
+                        // Pause
+                        stopTimer();
+                        setAllInteractiveInactive(true);
+                        pauseIcon.style.display = 'none';
+                        playIcon.style.display = '';
+                        btn.title = 'Folytatás';
+                    } else {
+                        // Play
+                        resumeTimer();
+                        setAllInteractiveInactive(false);
+                        pauseIcon.style.display = '';
+                        playIcon.style.display = 'none';
+                        btn.title = 'Szünet';
+                    }
+                });
+            }
+        });
+        
+        // NE indítsuk el automatikusan az órát induláskor
+        // timerInterval = setInterval(updateTimer, 1000);
+        // updateTimer(); // Azonnali első frissítés
+        
+        // Help funkció - helyes válasz megjelenítése/elrejtése
+        function checkForHelp() {
+            const userInput = document.getElementById('userInput');
+            const answerSection = document.getElementById('answerSection');
+            
+            if (userInput && answerSection) {
+                const inputValue = userInput.value.toLowerCase().trim();
+                
+                if (inputValue === 'help') {
+                    // Helyes válasz megjelenítése
+                    answerSection.style.display = 'block';
+                    
+                    // Input mező törlése a "help" szó után
+                    userInput.value = '';
+                    
+                    // Információs üzenet
+                    const message = document.getElementById('message');
+                    message.textContent = 'Helyes válasz megjelenítve! Írja be a válaszát a fenti mezőbe.';
+                    message.style.backgroundColor = '#d1ecf1';
+                    message.style.color = '#0c5460';
+                    message.style.border = '1px solid #bee5eb';
+                    message.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        message.style.display = 'none';
+                    }, 3000);
+                } else if (inputValue === '' || inputValue.length === 0) {
+                    // Ha az input üres, elrejtjük a helyes válasz mezőt
+                    answerSection.style.display = 'none';
+                }
+            }
+        }
+        
+        // Input mező figyelése valós időben
+        document.addEventListener('DOMContentLoaded', function() {
+            const userInput = document.getElementById('userInput');
+            const nextBtn = document.getElementById('nextBtn');
+            if (userInput && nextBtn) {
+                // Valós idejű figyelés minden karakter beíráskor
+                userInput.addEventListener('input', function() {
+                    checkForHelp();
+                    if (userInput.value.length > 0) {
+                        nextBtn.disabled = true;
+                        nextBtn.style.opacity = '0.5';
+                        nextBtn.style.cursor = 'not-allowed';
+                    } else {
+                        nextBtn.disabled = false;
+                        nextBtn.style.opacity = '';
+                        nextBtn.style.cursor = '';
+                    }
+                });
+                // Enter lenyomás figyelése is
+                userInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        checkForHelp();
+                    }
+                });
+            }
+            
+            // Ikonok alapból inaktívak
+            // Karakterpaletta funkcionalitás
+            initCharacterPalette();
+            setIconsActive(false);
+        // Karakterpaletta inicializálása
+        function initCharacterPalette() {
+            const paletteToggle = document.getElementById('paletteToggle');
+            const characterPalette = document.getElementById('characterPalette');
+            const paletteClose = document.getElementById('paletteClose');
+            const paletteCaps = document.getElementById('paletteCaps');
+            const userInput = document.getElementById('userInput');
+
+            // Karakter gombok lekérdezése (dinamikusan, hogy váltáskor is működjön)
+            function getCharButtons() {
+                return characterPalette.querySelectorAll('.char-btn[data-char]');
+            }
+
+            // Paletta megnyitása/bezárása
+            paletteToggle.addEventListener('click', function() {
+                const isVisible = characterPalette.classList.contains('show');
+                if (isVisible) {
+                    characterPalette.classList.remove('show');
+                    paletteToggle.classList.remove('active');
+                    paletteToggle.textContent = '✏️';
+                    paletteToggle.title = 'Speciális karakterek paletta';
+                } else {
+                    characterPalette.classList.add('show');
+                    paletteToggle.classList.add('active');
+                    paletteToggle.textContent = '×';
+                    paletteToggle.title = 'Paletta bezárása';
+                }
+            });
+
+            // Bezárás gomb
+            paletteClose.addEventListener('click', function() {
+                characterPalette.classList.remove('show');
+                paletteToggle.classList.remove('active');
+                paletteToggle.textContent = '✏️';
+                paletteToggle.title = 'Speciális karakterek paletta';
+            });
+
+            // Nagybetűs váltás logika
+            let capsOn = false;
+            // Kisbetű-nagybetű párok (ha nincs, akkor csak .toUpperCase())
+            const charMap = {
+                'à': 'À', 'â': 'Â', 'ä': 'Ä', 'é': 'É', 'è': 'È', 'ê': 'Ê', 'ë': 'Ë',
+                'î': 'Î', 'ï': 'Ï', 'ô': 'Ô', 'ö': 'Ö', 'ù': 'Ù', 'û': 'Û', 'ü': 'Ü', 'ÿ': 'Ÿ', 'ç': 'Ç',
+                'á': 'Á', 'í': 'Í', 'ó': 'Ó', 'ú': 'Ú', 'ñ': 'Ñ', '¿': '¿', '¡': '¡',
+                'ä': 'Ä', 'ë': 'Ë', 'ï': 'Ï', 'ö': 'Ö', 'ü': 'Ü',
+                'ß': 'SS', 'ij': 'IJ',
+                // nagybetűből vissza kisbetű
+                'À': 'à', 'Â': 'â', 'Ä': 'ä', 'É': 'é', 'È': 'è', 'Ê': 'ê', 'Ë': 'ë',
+                'Î': 'î', 'Ï': 'ï', 'Ô': 'ô', 'Ö': 'ö', 'Ù': 'ù', 'Û': 'û', 'Ü': 'ü', 'Ÿ': 'ÿ', 'Ç': 'ç',
+                'Á': 'á', 'Í': 'í', 'Ó': 'ó', 'Ú': 'ú', 'Ñ': 'ñ',
+                'IJ': 'ij', 'SS': 'ß'
+            };
+
+            paletteCaps.addEventListener('click', function() {
+                capsOn = !capsOn;
+                paletteCaps.style.background = capsOn ? '#007bff' : '#f1f3f4';
+                paletteCaps.style.color = capsOn ? 'white' : '';
+                paletteCaps.textContent = capsOn ? 'CAPS' : 'Caps';
+                // Minden karakter gombot frissítünk
+                getCharButtons().forEach(btn => {
+                    let orig = btn.getAttribute('data-char-orig');
+                    if (!orig) {
+                        orig = btn.getAttribute('data-char');
+                        btn.setAttribute('data-char-orig', orig);
+                    }
+                    let newChar = orig;
+                    if (capsOn) {
+                        // Speciális párok
+                        newChar = charMap[orig] || orig.toUpperCase();
+                    } else {
+                        // Mindig az eredeti karakterre állítsuk vissza
+                        newChar = orig;
+                    }
+                    btn.textContent = newChar;
+                    btn.setAttribute('data-char', newChar);
+                });
+            });
+
+            // Karakter gombok eseménykezelése
+            getCharButtons().forEach(button => {
+                button.addEventListener('click', function() {
+                    const character = this.getAttribute('data-char');
+                    if (userInput && character) {
+                        // Karakter beszúrása a kurzor pozíciójánál
+                        const cursorPos = userInput.selectionStart;
+                        const textBefore = userInput.value.substring(0, cursorPos);
+                        const textAfter = userInput.value.substring(userInput.selectionEnd);
+                        userInput.value = textBefore + character + textAfter;
+                        // Kurzor pozíció beállítása a beszúrt karakter után
+                        const newCursorPos = cursorPos + character.length;
+                        userInput.setSelectionRange(newCursorPos, newCursorPos);
+                        userInput.focus();
+                        // Vizuális visszajelzés
+                        this.style.transform = 'scale(0.9)';
+                        setTimeout(() => { this.style.transform = ''; }, 150);
+                    }
+                });
+            });
+
+            // Kattintás a palettán kívül - bezárás
+            document.addEventListener('click', function(e) {
+                if (!characterPalette.contains(e.target) && !paletteToggle.contains(e.target)) {
+                    if (characterPalette.classList.contains('show')) {
+                        characterPalette.classList.remove('show');
+                        paletteToggle.classList.remove('active');
+                        paletteToggle.textContent = '✏️';
+                        paletteToggle.title = 'Speciális karakterek paletta';
+                    }
+                }
+            });
+
+            // ESC billentyű - bezárás
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && characterPalette.classList.contains('show')) {
+                    characterPalette.classList.remove('show');
+                    paletteToggle.classList.remove('active');
+                    paletteToggle.textContent = '✏️';
+                    paletteToggle.title = 'Speciális karakterek paletta';
+                }
+            });
+        }
+        });
+        
+        
+        document.getElementById('mainForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = document.getElementById('userInput');
+            const message = document.getElementById('message');
+            const correctAnswer = document.getElementById('answerInput').value.trim();
+            const nextBtn = document.getElementById('nextBtn');
+            // Dupla szóközök cseréje egy szóközre, majd trim
+            const userAnswer = input.value.replace(/\s{2,}/g, ' ').trim();
+
+            // Tisztított értéket visszaírjuk az input mezőbe
+            input.value = userAnswer;
+
+            // A submit alatt a Következő gomb legyen újra aktív
+            if (nextBtn) {
+                nextBtn.disabled = false;
+                nextBtn.style.opacity = '';
+                nextBtn.style.cursor = '';
+            }
+
+            if (userAnswer) {
+                osszesKerdesSzam++; // Növeljük a kérdések számát
+                // Válasz ellenőrzése
+                if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                    helyesValaszokSzama++; // Növeljük a helyes válaszok számát
+                    // Kérdés hozzáadása a megválaszoltak közé
+                    if (typeof window.currentQuestionIndex !== 'undefined') {
+                        answeredQuestions.add(window.currentQuestionIndex);
+                        console.log('Helyes válasz! Kérdés index hozzáadva:', window.currentQuestionIndex);
+                        console.log('Megválaszolt kérdések:', answeredQuestions);
+                    }
+                    // Sikeres válasz
+                    message.textContent = 'Hibátlan válasz!';
+                    message.style.backgroundColor = '#d4edda';
+                    message.style.color = '#155724';
+                    message.style.border = '1px solid #c3e6cb';
+                    // Input mező zöldre változtatása
+                    input.style.borderColor = '#28a745';
+                    input.style.backgroundColor = '#d4edda';
+                    // Példa csoport elrejtése
+                    var exampleGroup = document.getElementById('exampleGroup');
+                    if (exampleGroup) exampleGroup.style.display = 'none';
+                } else {
+                    hibasValaszokSzama++;
+                    // Sikertelen válasz
+                    message.innerHTML = `Sikertelen! Helyes válasz: <strong>${correctAnswer}</strong>`;
+                    message.style.backgroundColor = '#f8d7da';
+                    message.style.color = '#721c24';
+                    message.style.border = '1px solid #f5c6cb';
+                    // Input mező pirosra változtatása
+                    input.style.borderColor = '#dc3545';
+                    input.style.backgroundColor = '#f8d7da';
+                    // Példa csoport megjelenítése
+                    var exampleGroup = document.getElementById('exampleGroup');
+                    if (exampleGroup) exampleGroup.style.display = 'block';
+                    // --- Helyi hasonlóság értékelés ---
+                    function levenshtein(a, b) {
+                        const an = a.length, bn = b.length;
+                        if (an === 0) return bn;
+                        if (bn === 0) return an;
+                        let matrix = [];
+                        for (let i = 0; i <= bn; i++) matrix[i] = [i];
+                        for (let j = 0; j <= an; j++) matrix[0][j] = j;
+                        for (let i = 1; i <= bn; i++) {
+                            for (let j = 1; j <= an; j++) {
+                                matrix[i][j] = Math.min(
+                                    matrix[i - 1][j] + 1,
+                                    matrix[i][j - 1] + 1,
+                                    matrix[i - 1][j - 1] + (a[j - 1] === b[i - 1] ? 0 : 1)
+                                );
+                            }
+                        }
+                        return matrix[bn][an];
+                    }
+                    const normA = correctAnswer.toLowerCase().trim();
+                    const normB = userAnswer.toLowerCase().trim();
+                    const maxLen = Math.max(normA.length, normB.length);
+                    let percent = 0;
+                    if (maxLen > 0) {
+                        const dist = levenshtein(normA, normB);
+                        percent = Math.round(100 * (1 - dist / maxLen));
+                    }
+                    let szoveges = '';
+                    if (percent >= 90) szoveges = 'Nagyon hasonló';
+                    else if (percent >= 70) szoveges = 'Elég hasonló';
+                    else if (percent >= 40) szoveges = 'Részben hasonló';
+                    else if (percent > 0) szoveges = 'Alig hasonló';
+                    else szoveges = 'Teljesen eltérő';
+                    const prompt = `${correctAnswer} - Elvárt \n${userAnswer} - Megadott `;
+                    const reply = `${percent}% - ${szoveges}`;
+                    // Egyéni popup létrehozása textarea-val
+                    const popupBg = document.createElement('div');
+                    popupBg.style.position = 'fixed';
+                    popupBg.style.top = '0';
+                    popupBg.style.left = '0';
+                    popupBg.style.width = '100vw';
+                    popupBg.style.height = '100vh';
+                    popupBg.style.background = 'rgba(0,0,0,0.3)';
+                    popupBg.style.zIndex = '9999';
+                    popupBg.style.display = 'flex';
+                    popupBg.style.alignItems = 'center';
+                    popupBg.style.justifyContent = 'center';
+
+                    const popup = document.createElement('div');
+                    popup.style.background = '#fff';
+                    popup.style.padding = '28px 24px 18px 24px';
+                    popup.style.borderRadius = '12px';
+                    popup.style.boxShadow = '0 4px 24px rgba(0,0,0,0.18)';
+                    popup.style.maxWidth = '420px';
+                    popup.style.width = '90%';
+                    popup.style.textAlign = 'center';
+                    popup.style.position = 'absolute';
+                    popup.style.left = '50%';
+                    popup.style.top = '50%';
+                    popup.style.transform = 'translate(-50%, -50%)';
+
+                    // Drag and drop logika
+                    let isDragging = false;
+                    let dragOffsetX = 0;
+                    let dragOffsetY = 0;
+                    // Fejléc a húzáshoz
+                    const dragHeader = document.createElement('div');
+                    dragHeader.style.cursor = 'move';
+                    dragHeader.style.background = '#f1f3f4';
+                    dragHeader.style.padding = '6px 0 6px 0';
+                    dragHeader.style.margin = '-28px -24px 10px -24px';
+                    dragHeader.style.borderTopLeftRadius = '12px';
+                    dragHeader.style.borderTopRightRadius = '12px';
+                    dragHeader.style.fontWeight = 'bold';
+                    dragHeader.textContent = 'Hasonlóság értékelése';
+                    popup.appendChild(dragHeader);
+
+                    dragHeader.addEventListener('mousedown', function(e) {
+                        isDragging = true;
+                        // Az egér pozíciója a popup bal felső sarkához képest
+                        const rect = popup.getBoundingClientRect();
+                        dragOffsetX = e.clientX - rect.left;
+                        dragOffsetY = e.clientY - rect.top;
+                        document.body.style.userSelect = 'none';
+                    });
+                    document.addEventListener('mousemove', function(e) {
+                        if (isDragging) {
+                            popup.style.left = e.clientX - dragOffsetX + 'px';
+                            popup.style.top = e.clientY - dragOffsetY + 'px';
+                            popup.style.transform = '';
+                        }
+                    });
+                    document.addEventListener('mouseup', function() {
+                        isDragging = false;
+                        document.body.style.userSelect = '';
+                    });
+
+
+                    // Régi label helyett csak margin
+                    const label = document.createElement('div');
+                    label.style.height = '0px';
+                    label.style.marginBottom = '10px';
+
+                    const textarea = document.createElement('textarea');
+                    textarea.value = prompt;
+                    textarea.readOnly = true;
+                    textarea.style.width = '100%';
+                    textarea.style.height = '60px';
+                    textarea.style.marginBottom = '12px';
+                    textarea.style.fontSize = '14px';
+                    textarea.style.resize = 'none';
+                    textarea.style.background = '#f8f9fa';
+                    textarea.style.border = '1px solid #ced4da';
+                    textarea.style.borderRadius = '5px';
+                    textarea.style.padding = '8px';
+
+                    const replyDiv = document.createElement('div');
+                    replyDiv.textContent = reply;
+                    replyDiv.style.marginBottom = '18px';
+                    replyDiv.style.fontSize = '15px';
+                    replyDiv.style.color = '#333';
+
+                    const closeBtn = document.createElement('button');
+                    // --- Két gomb: Elfogadjuk, Tényleg hiba ---
+                    const acceptBtn = document.createElement('button');
+                    acceptBtn.textContent = 'Elfogadjuk';
+                    acceptBtn.style.background = '#28a745';
+                    acceptBtn.style.color = '#fff';
+                    acceptBtn.style.border = 'none';
+                    acceptBtn.style.borderRadius = '5px';
+                    acceptBtn.style.padding = '8px 18px';
+                    acceptBtn.style.fontSize = '15px';
+                    acceptBtn.style.cursor = 'pointer';
+                    acceptBtn.style.marginRight = '12px';
+
+                    const rejectBtn = document.createElement('button');
+                    rejectBtn.textContent = 'Tényleg hiba';
+                    rejectBtn.style.background = '#dc3545';
+                    rejectBtn.style.color = '#fff';
+                    rejectBtn.style.border = 'none';
+                    rejectBtn.style.borderRadius = '5px';
+                    rejectBtn.style.padding = '8px 18px';
+                    rejectBtn.style.fontSize = '15px';
+                    rejectBtn.style.cursor = 'pointer';
+
+                    acceptBtn.addEventListener('click', () => {
+                        // Tekintsük helyes válasznak a beírtat
+                        helyesValaszokSzama++;
+                        // Hibás válaszok számát csökkentjük, ha nagyobb mint 0
+                        if (hibasValaszokSzama > 0) {
+                            hibasValaszokSzama--;
+                        }
+                        // Ha még nem volt hozzáadva, adjuk hozzá a megválaszoltakhoz
+                        if (typeof window.currentQuestionIndex !== 'undefined') {
+                            answeredQuestions.add(window.currentQuestionIndex);
+                        }
+                        // Írjuk vissza az input mezőbe az elvárt (helyes) választ
+                        input.value = correctAnswer;
+                        // UI visszajelzés
+                        message.textContent = 'Elfogadtuk a választ!';
+                        message.style.backgroundColor = '#d4edda';
+                        message.style.color = '#155724';
+                        message.style.border = '1px solid #c3e6cb';
+                        input.style.borderColor = '#28a745';
+                        input.style.backgroundColor = '#d4edda';
+                        updateStatisztikak();
+                        document.body.removeChild(popupBg);
+                    });
+                    rejectBtn.addEventListener('click', () => {
+                        document.body.removeChild(popupBg);
+                    });
+
+                    popup.appendChild(label);
+                    popup.appendChild(textarea);
+                    popup.appendChild(replyDiv);
+                    // Gombok egy sorban
+                    const btnRow = document.createElement('div');
+                    btnRow.style.display = 'flex';
+                    btnRow.style.justifyContent = 'center';
+                    btnRow.style.gap = '10px';
+                    btnRow.appendChild(acceptBtn);
+                    btnRow.appendChild(rejectBtn);
+                    popup.appendChild(btnRow);
+                    popupBg.appendChild(popup);
+                    document.body.appendChild(popupBg);
+                }
+                // Statisztikák frissítése
+                updateStatisztikak();
+                message.style.display = 'block';
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            const message = document.getElementById('message');
+            // Példa csoport elrejtése minden kattintáskor
+            var exampleGroup = document.getElementById('exampleGroup');
+            if (exampleGroup) exampleGroup.style.display = 'none';
+
+            if (!currentExcelData || currentExcelData.length <= 1) {
+                message.textContent = 'Nincs betöltött lecke! Először válassz ki egy lecke fájlt.';
+                message.style.backgroundColor = '#f8d7da';
+                message.style.color = '#721c24';
+                message.style.border = '1px solid #f5c6cb';
+                message.style.display = 'block';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                    // Alapértelmezett stílus visszaállítása
+                    message.style.backgroundColor = '#d4edda';
+                    message.style.color = '#155724';
+                    message.style.border = '1px solid #c3e6cb';
+                }, 3000);
+                return;
+            }
+
+            // Ellenőrizzük, hogy van-e még feltehető kérdés
+            const dataRows = currentExcelData.slice(1); // Fejléc nélkül
+            const availableQuestions = [];
+            for (let i = 0; i < dataRows.length; i++) {
+                if (!answeredQuestions.has(i)) {
+                    availableQuestions.push(i);
+                }
+            }
+
+            // Ha nincs több kérdés, sikeresen teljesítette üzenet
+            if (availableQuestions.length === 0) {
+                message.textContent = 'Sikeresen megválaszoltad az összes kérdést!';
+                message.style.backgroundColor = '#d4edda';
+                message.style.color = '#155724';
+                message.style.border = '1px solid #c3e6cb';
+                message.style.display = 'block';
+                // Timer megállítása
+                stopTimer();
+                console.log('Timer megállítva - lecke teljesítve');
+                return;
+            }
+
+            // Új kérdés betöltése a külön függvény segítségével
+            const success = loadRandomQuestion();
+
+            // Statisztikák frissítése
+            updateStatisztikak();
+
+            // Input mező eredeti stílusának visszaállítása új kérdésnél
+            const userInput = document.getElementById('userInput');
+            if (userInput) {
+                userInput.style.borderColor = '#ddd';
+                userInput.style.backgroundColor = '#ffffff';
+            }
+
+            // Üzenet elrejtése új kérdésnél
+            message.style.display = 'none';
+
+            if (!success) {
+                message.textContent = 'Hiba történt a kérdés betöltésekor!';
+                message.style.backgroundColor = '#f8d7da';
+                message.style.color = '#721c24';
+                message.style.border = '1px solid #f5c6cb';
+                message.style.display = 'block';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                    // Alapértelmezett stílus visszaállítása
+                    message.style.backgroundColor = '#d4edda';
+                    message.style.color = '#155724';
+                    message.style.border = '1px solid #c3e6cb';
+                }, 3000);
+            }
+        });
+
+        // Hover effekt a Következő gombhoz
+        document.getElementById('nextBtn').addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#218838';
+        });
+        
+        document.getElementById('nextBtn').addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '#28a745';
+        });
+
+        // Kilépés gomb eseménykezelője - új gombhoz
+        document.getElementById('exitBtnBottom').addEventListener('click', function() {
+            if (confirm('Biztos, hogy ki akarsz lépni?')) {
+                window.close();
+                // Ha a window.close() nem működik (modern böngészőkben korlátozva van)
+                document.body.innerHTML = '<div style="text-align: center; padding: 50px;"><h1>Az alkalmazás bezárult</h1><p>Zárja be a böngésző fület.</p></div>';
+            }
+        });
+
+        // Régi kilépés gomb eseménykezelője (még mindig szükséges a rejtett gombhoz)
+        document.getElementById('exitBtn').addEventListener('click', function() {
+            if (confirm('Biztos, hogy ki akarsz lépni?')) {
+                window.close();
+                // Ha a window.close() nem működik (modern böngészőkben korlátozva van)
+                document.body.innerHTML = '<div style="text-align: center; padding: 50px;"><h1>Az alkalmazás bezárult</h1><p>Zárja be a böngésző fület.</p></div>';
+            }
+        });
+
+        document.getElementById('loadLessonBtn').addEventListener('click', function() {
+            // Információs üzenet megjelenítése
+            const message = document.getElementById('message');
+            // Ha előzőleg hibaüzenet volt, töröljük
+            if (message.style.backgroundColor === 'rgb(248, 215, 218)' || message.style.backgroundColor === '#f8d7da') {
+                message.style.display = 'none';
+                message.style.backgroundColor = '#d4edda';
+                message.style.color = '#155724';
+                message.style.border = '1px solid #c3e6cb';
+            }
+            message.textContent = `Fájl böngésző megnyitása...`;
+            message.style.backgroundColor = '#fff3cd';
+            message.style.color = '#856404';
+            message.style.border = '1px solid #ffeaa7';
+            message.style.display = 'block';
+
+            // Fájl böngésző megnyitása
+            setTimeout(() => {
+                document.getElementById('fileInput').click();
+            }, 1000);
+
+            // Üzenet elrejtése 4 másodperc után CSAK ha nem hibaüzenet van
+            setTimeout(() => {
+                if (message.style.backgroundColor !== 'rgb(248, 215, 218)' && message.style.backgroundColor !== '#f8d7da') {
+                    message.style.display = 'none';
+                    message.style.backgroundColor = '#d4edda';
+                    message.style.color = '#155724';
+                    message.style.border = '1px solid #c3e6cb';
+                }
+            }, 4000);
+        });
+
+        // Fájl kiválasztás kezelése
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const message = document.getElementById('message');
+            
+            if (file) {
+                // Ellenőrzi, hogy Excel fájl-e
+                const fileName = file.name;
+                const fileExtension = fileName.split('.').pop().toLowerCase();
+                const supportedFormats = ['xlsx', 'xls'];
+                
+                if (supportedFormats.includes(fileExtension)) {
+                    // Excel fájl információk megjelenítése
+                    const fileGroupLabel = document.getElementById('fileGroupLabel');
+                    fileGroupLabel.textContent = fileName;
+                    
+                    // Excel fájl beolvasása
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, {type: 'array'});
+                    const sheetName = workbook.SheetNames[0]; // Első munkalap
+                    const worksheet = workbook.Sheets[sheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+
+                    // Fejléc ellenőrzése
+                    const expectedHeader = ['kerdes', 'valasz', 'megj1', 'megj2', 'megj3'];
+                    const actualHeader = (jsonData[0] || []).map(h => (h || '').toString().toLowerCase().trim());
+                    const headerMatch = expectedHeader.every((val, idx) => actualHeader[idx] === val);
+                    if (!headerMatch || actualHeader.length < expectedHeader.length) {
+                        message.textContent = `Hiba: A fejlécnek pontosan így kell kinéznie: kerdes, valasz, megj1, megj2, megj3 (és ebben a sorrendben)!\nJelenlegi fejléc: ${actualHeader.join(', ')}`;
+                        message.style.backgroundColor = '#f8d7da';
+                        message.style.color = '#721c24';
+                        message.style.border = '1px solid #f5c6cb';
+                        message.style.display = 'block';
+                        return;
+                    }
+
+                    // Excel adatok tárolása
+                    currentExcelData = jsonData;
+                    console.log('Excel adatok betöltve:', jsonData);
+
+                    // Statisztikák frissítése új lecke betöltésekor
+                    answeredQuestions.clear(); // Válaszolt kérdések törlése
+                    helyesValaszokSzama = 0;
+                    hibasValaszokSzama = 0;
+                    osszesKerdesSzam = 0;
+                    updateStatisztikak(); // Ez beállítja a Kérdés mezőt a teljes kérdésszámra
+
+                    // Timer indítása lecke betöltésekor
+                    isTimerStopped = false;
+                    startTimer();
+
+                    // Automatikus első rekord kiválasztás és kiírás
+                    loadRandomQuestion();
+
+                    // Ikonok aktiválása lecke betöltése után
+                    setIconsActive(true);
+
+                    message.textContent = `A lecke fájl sikeresen betöltve: ${fileName} (${jsonData.length} sor)`;
+                        } catch (error) {
+                            console.error('Excel beolvasási hiba:', error);
+                            message.textContent = `Hiba az Excel fájl beolvasásakor: ${error.message}`;
+                            message.style.backgroundColor = '#f8d7da';
+                            message.style.color = '#721c24';
+                            message.style.border = '1px solid #f5c6cb';
+                        }
+                    };
+                    reader.readAsArrayBuffer(file);
+                    
+                    // Sikeres visszajelzés
+                    message.style.backgroundColor = '#d1ecf1';
+                    message.style.color = '#0c5460';
+                    message.style.border = '1px solid #bee5eb';
+                    message.style.display = 'block';
+                    // Csak siker/info üzenet tűnjön el
+                    setTimeout(() => {
+                        if (message.style.backgroundColor !== 'rgb(248, 215, 218)' && message.style.backgroundColor !== '#f8d7da') {
+                            message.style.display = 'none';
+                            // Alapértelmezett stílus visszaállítása
+                            message.style.backgroundColor = '#d4edda';
+                            message.style.color = '#155724';
+                            message.style.border = '1px solid #c3e6cb';
+                        }
+                    }, 4000);
+                } else {
+                    // Hibás fájltípus esetén
+                    message.textContent = `Hiba: Csak Excel fájlok (.xlsx, .xls) engedélyezettek!`;
+                    message.style.backgroundColor = '#f8d7da';
+                    message.style.color = '#721c24';
+                    message.style.border = '1px solid #f5c6cb';
+                    message.style.display = 'block';
+                    // Hiba esetén ne tűnjön el magától
+                }
+            }
+            
+            // File input értékének törlése, hogy ugyanazt a fájlt újra ki lehessen választani
+            event.target.value = '';
+        });
+    </script>
+</body>
+</html>

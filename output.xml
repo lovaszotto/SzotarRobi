@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.13.7 on win32)" generated="2025-10-12T10:46:11.789243" rpa="true" schemaversion="5">
+<suite id="s1" name="Main" source="C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\main.robot">
+<test id="s1-t1" name="Inditas" line="159">
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:11.818079" level="INFO">Szótár-Robi alkalmazás indítása...</msg>
+<arg>Szótár-Robi alkalmazás indítása...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:11.817984" elapsed="0.000136"/>
+</kw>
+<kw name="File Should Exist" owner="OperatingSystem">
+<msg time="2025-10-12T10:46:11.818402" level="INFO" html="true">File '&lt;a href="file://C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\flask_server.py"&gt;C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\flask_server.py&lt;/a&gt;' exists.</msg>
+<arg>${FLASK_APP}</arg>
+<arg>Flask szerver script nem található: ${FLASK_APP}</arg>
+<doc>Fails unless the given ``path`` points to an existing file.</doc>
+<status status="PASS" start="2025-10-12T10:46:11.818235" elapsed="0.000201"/>
+</kw>
+<kw name="Start Process" owner="Process">
+<msg time="2025-10-12T10:46:11.818698" level="INFO">Starting process:
+python C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\flask_server.py</msg>
+<msg time="2025-10-12T10:46:11.823075" level="INFO">${server_process} = &lt;Popen: returncode: None args: ['python', 'C:\\Users\\oLovasz\\MyRobotFramew...&gt;</msg>
+<var>${server_process}</var>
+<arg>python</arg>
+<arg>${FLASK_APP}</arg>
+<arg>cwd=C:\\Users\\oLovasz\\MyRobotFramework\\TestDownloadedRobots\\SzotarRobi\\Szó-kikérdező</arg>
+<arg>alias=flask_server</arg>
+<doc>Starts a new process on background.</doc>
+<status status="PASS" start="2025-10-12T10:46:11.818561" elapsed="0.004540"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:11.823292" level="INFO">Várakozás a Flask szerver indulására...</msg>
+<arg>Várakozás a Flask szerver indulására...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:11.823231" elapsed="0.000084"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.823622" level="INFO">Slept 3 seconds.</msg>
+<arg>3s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-10-12T10:46:11.823395" elapsed="3.000317"/>
+</kw>
+<kw name="Is Process Running" owner="Process">
+<msg time="2025-10-12T10:46:14.824150" level="INFO">${server_running} = True</msg>
+<var>${server_running}</var>
+<arg>flask_server</arg>
+<doc>Checks is the process running or not.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.823976" elapsed="0.000191"/>
+</kw>
+<if>
+<branch type="IF" condition="${server_running}">
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.824507" level="INFO">✓ Flask szerver sikeresen elindult a http://localhost:5000 címen</msg>
+<arg>✓ Flask szerver sikeresen elindult a ${SERVER_URL} címen</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.824432" elapsed="0.000096"/>
+</kw>
+<status status="PASS" start="2025-10-12T10:46:14.824339" elapsed="0.000205"/>
+</branch>
+<branch type="ELSE">
+<kw name="Log" owner="BuiltIn">
+<arg>⚠️ Flask szerver nem indult el azonnal, de folytatjuk...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2025-10-12T10:46:14.824607" elapsed="0.000009"/>
+</kw>
+<status status="NOT RUN" start="2025-10-12T10:46:14.824561" elapsed="0.000069"/>
+</branch>
+<status status="PASS" start="2025-10-12T10:46:14.824317" elapsed="0.000323"/>
+</if>
+<kw name="Browser Megnyitása">
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.825393" level="INFO">=========================================================================</msg>
+<arg>=========================================================================</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.825293" elapsed="0.000140"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.825539" level="INFO">FONTOS: A szerver elindult a http://localhost:5000 címen</msg>
+<arg>FONTOS: A szerver elindult a ${SERVER_URL} címen</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.825480" elapsed="0.000077"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.825635" level="INFO">Alapértelmezett böngésző megnyitása...</msg>
+<arg>Alapértelmezett böngésző megnyitása...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.825599" elapsed="0.000054"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.825728" level="INFO">=========================================================================</msg>
+<arg>=========================================================================</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.825692" elapsed="0.000053"/>
+</kw>
+<kw name="Run Process" owner="Process">
+<msg time="2025-10-12T10:46:14.825865" level="INFO">Starting process:
+cmd /c start http://localhost:5000</msg>
+<msg time="2025-10-12T10:46:14.834390" level="INFO">Waiting for process to complete.</msg>
+<msg time="2025-10-12T10:46:14.879764" level="INFO">Process completed.</msg>
+<arg>cmd</arg>
+<arg>/c</arg>
+<arg>start</arg>
+<arg>${SERVER_URL}</arg>
+<doc>Runs a process and waits for it to complete.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.825782" elapsed="0.054159"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.880275" level="INFO">A Szótár-Robi alkalmazás megnyílt az alapértelmezett böngészőben</msg>
+<arg>A Szótár-Robi alkalmazás megnyílt az alapértelmezett böngészőben</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.880178" elapsed="0.000124"/>
+</kw>
+<doc>Megnyitja az alapértelmezett böngészőt (nem Simple Browser) a Szótár-Robi alkalmazással</doc>
+<status status="PASS" start="2025-10-12T10:46:14.825002" elapsed="0.055346"/>
+</kw>
+<kw name="Felhasználói Munkamenet Várakozás">
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.880948" level="INFO">A Szótár-Robi alkalmazás fut az alapértelmezett böngészőben.</msg>
+<arg>A Szótár-Robi alkalmazás fut az alapértelmezett böngészőben.</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.880893" elapsed="0.000080"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.881082" level="INFO">=========================================================================</msg>
+<arg>=========================================================================</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.881028" elapsed="0.000078"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.881196" level="INFO">UTASÍTÁSOK:</msg>
+<arg>UTASÍTÁSOK:</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.881155" elapsed="0.000065"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.881310" level="INFO">1. Használja a megnyílt böngészőt a szótár gyakorláshoz</msg>
+<arg>1. Használja a megnyílt böngészőt a szótár gyakorláshoz</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.881269" elapsed="0.000063"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.881522" level="INFO">2. Töltse be a kívánt lecke fájlt a 'Lecke betöltése' gombbal</msg>
+<arg>2. Töltse be a kívánt lecke fájlt a 'Lecke betöltése' gombbal</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.881436" elapsed="0.000262"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.881843" level="INFO">3. Gyakoroljon kedvére a minta fájlokkal vagy saját Excel fájlokkal!</msg>
+<arg>3. Gyakoroljon kedvére a minta fájlokkal vagy saját Excel fájlokkal!</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.881781" elapsed="0.000087"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.881977" level="INFO">4. LEÁLLÍTÁS: Amikor befejezi a gyakorlást, futtassa a 'stop_server.bat' fájlt</msg>
+<arg>4. LEÁLLÍTÁS: Amikor befejezi a gyakorlást, futtassa a 'stop_server.bat' fájlt</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.881927" elapsed="0.000073"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.882107" level="INFO">5. Vagy nyomja meg a Ctrl+C-t ebben a terminál ablakban</msg>
+<arg>5. Vagy nyomja meg a Ctrl+C-t ebben a terminál ablakban</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.882055" elapsed="0.000075"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.882244" level="INFO">=========================================================================</msg>
+<arg>=========================================================================</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.882190" elapsed="0.000079"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.882472" level="INFO">A szerver fut a http://localhost:5000 címen</msg>
+<arg>A szerver fut a ${SERVER_URL} címen</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.882320" elapsed="0.000184"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.882620" level="INFO">Várunk a leállítási jelzésre...</msg>
+<arg>Várunk a leállítási jelzésre...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.882567" elapsed="0.000080"/>
+</kw>
+<while condition="True">
+<iter>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-10-12T10:46:14.883125" level="INFO">${stop_file} = C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\stop_server.txt</msg>
+<var>${stop_file}</var>
+<arg>C:\\Users\\oLovasz\\MyRobotFramework\\TestDownloadedRobots\\SzotarRobi\\Szó-kikérdező${/}stop_server.txt</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.882976" elapsed="0.000173"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="File Should Exist" owner="OperatingSystem">
+<msg time="2025-10-12T10:46:14.883524" level="FAIL">File 'C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\stop_server.txt' does not exist.</msg>
+<arg>${stop_file}</arg>
+<doc>Fails unless the given ``path`` points to an existing file.</doc>
+<status status="FAIL" start="2025-10-12T10:46:14.883317" elapsed="0.000316">File 'C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\stop_server.txt' does not exist.</status>
+</kw>
+<msg time="2025-10-12T10:46:14.883695" level="INFO">${stop_exists} = False</msg>
+<var>${stop_exists}</var>
+<arg>File Should Exist</arg>
+<arg>${stop_file}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.883228" elapsed="0.000481"/>
+</kw>
+<if>
+<branch type="IF" condition="${stop_exists}">
+<kw name="Log" owner="BuiltIn">
+<arg>✓ Stop fájl észlelve, szerver leállítása...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2025-10-12T10:46:14.883841" elapsed="0.000011"/>
+</kw>
+<kw name="Remove File" owner="OperatingSystem">
+<arg>${stop_file}</arg>
+<doc>Removes a file with the given path.</doc>
+<status status="NOT RUN" start="2025-10-12T10:46:14.883902" elapsed="0.000010"/>
+</kw>
+<break>
+<status status="NOT RUN" start="2025-10-12T10:46:14.883936" elapsed="0.000014"/>
+</break>
+<status status="NOT RUN" start="2025-10-12T10:46:14.883761" elapsed="0.000204"/>
+</branch>
+<status status="PASS" start="2025-10-12T10:46:14.883748" elapsed="0.000229"/>
+</if>
+<kw name="Is Process Running" owner="Process">
+<msg time="2025-10-12T10:46:14.884124" level="INFO">${server_running} = True</msg>
+<var>${server_running}</var>
+<arg>flask_server</arg>
+<doc>Checks is the process running or not.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.884021" elapsed="0.000116"/>
+</kw>
+<if>
+<branch type="IF" condition="not ${server_running}">
+<kw name="Log" owner="BuiltIn">
+<arg>✗ A Flask szerver leállt, kilépés...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2025-10-12T10:46:14.884280" elapsed="0.000010"/>
+</kw>
+<break>
+<status status="NOT RUN" start="2025-10-12T10:46:14.884314" elapsed="0.000010"/>
+</break>
+<status status="NOT RUN" start="2025-10-12T10:46:14.884172" elapsed="0.000165"/>
+</branch>
+<status status="PASS" start="2025-10-12T10:46:14.884163" elapsed="0.000185"/>
+</if>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-10-12T10:46:17.884556" level="INFO">Slept 3 seconds.</msg>
+<arg>3s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-10-12T10:46:14.884401" elapsed="3.000264"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:17.884931" level="INFO">Szerver státusz: AKTÍV (várunk a stop_server.bat futtatására...)</msg>
+<arg>Szerver státusz: AKTÍV (várunk a stop_server.bat futtatására...)</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:17.884811" elapsed="0.000161"/>
+</kw>
+<status status="PASS" start="2025-10-12T10:46:14.882691" elapsed="3.002311"/>
+</iter>
+<iter>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-10-12T10:46:17.885399" level="INFO">${stop_file} = C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\stop_server.txt</msg>
+<var>${stop_file}</var>
+<arg>C:\\Users\\oLovasz\\MyRobotFramework\\TestDownloadedRobots\\SzotarRobi\\Szó-kikérdező${/}stop_server.txt</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-10-12T10:46:17.885263" elapsed="0.000152"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="File Should Exist" owner="OperatingSystem">
+<msg time="2025-10-12T10:46:17.885752" level="FAIL">File 'C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\stop_server.txt' does not exist.</msg>
+<arg>${stop_file}</arg>
+<doc>Fails unless the given ``path`` points to an existing file.</doc>
+<status status="FAIL" start="2025-10-12T10:46:17.885558" elapsed="0.000252">File 'C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\stop_server.txt' does not exist.</status>
+</kw>
+<msg time="2025-10-12T10:46:17.885864" level="INFO">${stop_exists} = False</msg>
+<var>${stop_exists}</var>
+<arg>File Should Exist</arg>
+<arg>${stop_file}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2025-10-12T10:46:17.885480" elapsed="0.000396"/>
+</kw>
+<if>
+<branch type="IF" condition="${stop_exists}">
+<kw name="Log" owner="BuiltIn">
+<arg>✓ Stop fájl észlelve, szerver leállítása...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2025-10-12T10:46:17.885990" elapsed="0.000010"/>
+</kw>
+<kw name="Remove File" owner="OperatingSystem">
+<arg>${stop_file}</arg>
+<doc>Removes a file with the given path.</doc>
+<status status="NOT RUN" start="2025-10-12T10:46:17.886044" elapsed="0.000094"/>
+</kw>
+<break>
+<status status="NOT RUN" start="2025-10-12T10:46:17.886162" elapsed="0.000011"/>
+</break>
+<status status="NOT RUN" start="2025-10-12T10:46:17.885919" elapsed="0.000266"/>
+</branch>
+<status status="PASS" start="2025-10-12T10:46:17.885907" elapsed="0.000289"/>
+</if>
+<kw name="Is Process Running" owner="Process">
+<msg time="2025-10-12T10:46:17.886340" level="INFO">${server_running} = True</msg>
+<var>${server_running}</var>
+<arg>flask_server</arg>
+<doc>Checks is the process running or not.</doc>
+<status status="PASS" start="2025-10-12T10:46:17.886249" elapsed="0.000104"/>
+</kw>
+<if>
+<branch type="IF" condition="not ${server_running}">
+<kw name="Log" owner="BuiltIn">
+<arg>✗ A Flask szerver leállt, kilépés...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2025-10-12T10:46:17.886473" elapsed="0.000010"/>
+</kw>
+<break>
+<status status="NOT RUN" start="2025-10-12T10:46:17.886502" elapsed="0.000007"/>
+</break>
+<status status="NOT RUN" start="2025-10-12T10:46:17.886388" elapsed="0.000133"/>
+</branch>
+<status status="PASS" start="2025-10-12T10:46:17.886378" elapsed="0.000152"/>
+</if>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-10-12T10:46:20.886983" level="INFO">Slept 3 seconds.</msg>
+<arg>3s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-10-12T10:46:17.886566" elapsed="3.000504"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:20.887280" level="INFO">Szerver státusz: AKTÍV (várunk a stop_server.bat futtatására...)</msg>
+<arg>Szerver státusz: AKTÍV (várunk a stop_server.bat futtatására...)</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:20.887190" elapsed="0.000123"/>
+</kw>
+<status status="PASS" start="2025-10-12T10:46:17.885033" elapsed="3.002302"/>
+</iter>
+<iter>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-10-12T10:46:20.887664" level="INFO">${stop_file} = C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\stop_server.txt</msg>
+<var>${stop_file}</var>
+<arg>C:\\Users\\oLovasz\\MyRobotFramework\\TestDownloadedRobots\\SzotarRobi\\Szó-kikérdező${/}stop_server.txt</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-10-12T10:46:20.887541" elapsed="0.000140"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="File Should Exist" owner="OperatingSystem">
+<msg time="2025-10-12T10:46:20.887973" level="FAIL">File 'C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\stop_server.txt' does not exist.</msg>
+<arg>${stop_file}</arg>
+<doc>Fails unless the given ``path`` points to an existing file.</doc>
+<status status="FAIL" start="2025-10-12T10:46:20.887801" elapsed="0.000215">File 'C:\Users\oLovasz\MyRobotFramework\TestDownloadedRobots\SzotarRobi\Szó-kikérdező\stop_server.txt' does not exist.</status>
+</kw>
+<msg time="2025-10-12T10:46:20.888060" level="INFO">${stop_exists} = False</msg>
+<var>${stop_exists}</var>
+<arg>File Should Exist</arg>
+<arg>${stop_file}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2025-10-12T10:46:20.887740" elapsed="0.000330"/>
+</kw>
+<if>
+<branch type="IF" condition="${stop_exists}">
+<kw name="Log" owner="BuiltIn">
+<arg>✓ Stop fájl észlelve, szerver leállítása...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2025-10-12T10:46:20.888172" elapsed="0.000009"/>
+</kw>
+<kw name="Remove File" owner="OperatingSystem">
+<arg>${stop_file}</arg>
+<doc>Removes a file with the given path.</doc>
+<status status="NOT RUN" start="2025-10-12T10:46:20.888219" elapsed="0.000008"/>
+</kw>
+<break>
+<status status="NOT RUN" start="2025-10-12T10:46:20.888245" elapsed="0.000008"/>
+</break>
+<status status="NOT RUN" start="2025-10-12T10:46:20.888110" elapsed="0.000154"/>
+</branch>
+<status status="PASS" start="2025-10-12T10:46:20.888098" elapsed="0.000176"/>
+</if>
+<kw name="Is Process Running" owner="Process">
+<msg time="2025-10-12T10:46:20.888392" level="INFO">${server_running} = False</msg>
+<var>${server_running}</var>
+<arg>flask_server</arg>
+<doc>Checks is the process running or not.</doc>
+<status status="PASS" start="2025-10-12T10:46:20.888309" elapsed="0.000094"/>
+</kw>
+<if>
+<branch type="IF" condition="not ${server_running}">
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:20.888543" level="INFO">✗ A Flask szerver leállt, kilépés...</msg>
+<arg>✗ A Flask szerver leállt, kilépés...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:20.888505" elapsed="0.000057"/>
+</kw>
+<break>
+<status status="PASS" start="2025-10-12T10:46:20.888579" elapsed="0.000017"/>
+</break>
+<status status="PASS" start="2025-10-12T10:46:20.888431" elapsed="0.000227"/>
+</branch>
+<status status="PASS" start="2025-10-12T10:46:20.888423" elapsed="0.000247"/>
+</if>
+<kw name="Sleep" owner="BuiltIn">
+<arg>3s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-10-12T10:46:20.888707" elapsed="0.000008"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<arg>Szerver státusz: AKTÍV (várunk a stop_server.bat futtatására...)</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2025-10-12T10:46:20.888751" elapsed="0.000008"/>
+</kw>
+<status status="PASS" start="2025-10-12T10:46:20.887356" elapsed="0.001416"/>
+</iter>
+<status status="PASS" start="2025-10-12T10:46:14.882689" elapsed="6.006095"/>
+</while>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:20.888855" level="INFO">✓ Felhasználói munkamenet befejezve</msg>
+<arg>✓ Felhasználói munkamenet befejezve</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:20.888820" elapsed="0.000054"/>
+</kw>
+<doc>Interaktív várakozás - a felhasználó dönti el, mikor fejezte be</doc>
+<status status="PASS" start="2025-10-12T10:46:14.880722" elapsed="6.008186"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:20.889498" level="INFO">Flask szerver leállítása...</msg>
+<arg>Flask szerver leállítása...</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:20.889446" elapsed="0.000072"/>
+</kw>
+<kw name="Terminate Process" owner="Process">
+<msg time="2025-10-12T10:46:20.889665" level="INFO">Gracefully terminating process.</msg>
+<msg time="2025-10-12T10:46:20.890333" level="INFO">Process completed.</msg>
+<arg>flask_server</arg>
+<doc>Stops the process gracefully or forcefully.</doc>
+<status status="PASS" start="2025-10-12T10:46:20.889610" elapsed="0.000751"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2025-10-12T10:46:20.890486" level="INFO">Szótár-Robi alkalmazás sikeresen bezárult</msg>
+<arg>Szótár-Robi alkalmazás sikeresen bezárult</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2025-10-12T10:46:20.890445" elapsed="0.000060"/>
+</kw>
+<doc>Alternatív entry point Task-ként</doc>
+<tag>main</tag>
+<tag>webapp</tag>
+<status status="PASS" start="2025-10-12T10:46:11.817452" elapsed="9.073147"/>
+</test>
+<doc>Szótár-Robi alkalmazás indító Robot Framework teszt
+Ez a teszt elindít egy Flask szervert a webapp kiszolgálásához,
+megnyitja a böngészőben a Szotar-Robi.html-t,
+megvárja amíg a felhasználó befejezi a munkát,
+majd leállítja a szervert.</doc>
+<status status="PASS" start="2025-10-12T10:46:11.790054" elapsed="9.100850"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tasks</stat>
+</total>
+<tag>
+<stat pass="1" fail="0" skip="0">main</stat>
+<stat pass="1" fail="0" skip="0">webapp</stat>
+</tag>
+<suite>
+<stat name="Main" id="s1" pass="1" fail="0" skip="0">Main</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
