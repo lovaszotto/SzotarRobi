@@ -1,21 +1,23 @@
 @echo off
 REM =====================================================
-REM  SZOTAR-ROBI - TELEPITO v1.12
+REM  SZOTAR-ROBI - TELEPITO v1.13
 REM  Robot Framework alapú szótár gyakorló alkalmazás
 REM  Interaktív szókincs fejlesztő rendszer
+REM  Port frissítve: 5001 (korábban 5000)
 REM =====================================================
 setlocal EnableDelayedExpansion
 
 echo.
 echo =====================================================
-echo   SZOTAR-ROBI TELEPITO v1.0
+echo   SZOTAR-ROBI TELEPITO v1.13
 echo   
 echo   Funkcionalitas:
 echo   - Interaktiv szotar gyakorlas
-echo   - Flask web szerver  
+echo   - Flask web szerver (Port: 5001)
 echo   - Excel lecke fajlok tamogatasa
 echo   - Robot Framework automatizalas
 echo   - Webapplikacio bongeszoben
+echo   - Virtualis kornyezet (.venv) tamogatas
 echo =====================================================
 echo.
 
@@ -179,87 +181,78 @@ if errorlevel 1 (
 echo.
 echo start.bat fajl letrehozasa...
 
-REM start.bat fajl letrehozasa
+REM Modern start.bat fajl letrehozasa Flask szerver alapon
 echo @echo off > start.bat
-echo REM ========================================= >> start.bat
-echo REM  SZOTAR-ROBI ALKALMAZAS INDITAS >> start.bat
-echo REM ========================================= >> start.bat
+echo REM Szotar-Robi alkalmazas indito script >> start.bat
+echo REM Ez a script kozvetlenul elindija a Flask szervert es megnyitja a bongeszt >> start.bat
+echo. >> start.bat
 echo echo. >> start.bat
-echo echo ========================================= >> start.bat
-echo echo   SZOTAR-ROBI ALKALMAZAS >> start.bat
-echo echo   Interaktiv szotar gyakorlas >> start.bat
-echo echo ========================================= >> start.bat
+echo echo ===================================================== >> start.bat
+echo echo           Szotar-Robi Alkalmazas Indito >> start.bat
+echo echo ===================================================== >> start.bat
+echo echo. >> start.bat
+echo echo Flask szerver inditasa hatterben... >> start.bat
 echo echo. >> start.bat
 echo. >> start.bat
-echo REM Ellenorizzuk a virtualis kornyezet megletet >> start.bat
-echo if not exist ".venv\Scripts\robot.exe" ^( >> start.bat
-echo     echo HIBA: Virtualis kornyezet nem talalhato! >> start.bat
-echo     echo Futtassa eloszor a telepito.bat fajlt! >> start.bat
-echo     pause >> start.bat
-echo     exit /b 1 >> start.bat
-echo ^) >> start.bat
+echo REM Flask szerver inditasa hatterben >> start.bat
+echo start "Flask Szerver" "%%~dp0\.venv\Scripts\python.exe" "%%~dp0\flask_server.py" >> start.bat
 echo. >> start.bat
-echo echo Webapp ellenorzese... >> start.bat
-echo if not exist "webapp\Szotar-Robi.html" ^( >> start.bat
-echo     echo HIBA: webapp\Szotar-Robi.html fajl nem talalhato! >> start.bat
-echo     echo Ellenorizze a webapp konyvtarat! >> start.bat
-echo     pause >> start.bat
-echo     exit /b 1 >> start.bat
-echo ^) >> start.bat
+echo REM Varakozas a szerver indulasara >> start.bat
+echo timeout /t 3 /nobreak ^>nul >> start.bat
 echo. >> start.bat
-echo REM Results konyvtar letrehozasa ha nem letezik >> start.bat
-echo if not exist "results" ^( >> start.bat
-echo     echo Results konyvtar letrehozasa... >> start.bat
-echo     mkdir "results" >> start.bat
-echo ^) >> start.bat
+echo echo Szerver elindult: http://localhost:5001 >> start.bat
+echo echo Bongeszo megnyitasa... >> start.bat
+echo echo. >> start.bat
 echo. >> start.bat
-echo echo Szotar-Robi alkalmazas inditasa... >> start.bat
-echo echo Robot Framework teszt futtatasa ^(main.robot^)... >> start.bat
+echo REM Bongeszo megnyitasa >> start.bat
+echo start "" "http://localhost:5001" >> start.bat
 echo. >> start.bat
-echo .venv\Scripts\robot.exe --outputdir results main.robot >> start.bat
-echo. >> start.bat
-echo if errorlevel 1 ^( >> start.bat
-echo     echo HIBA: Az alkalmazas inditasa sikertelen! >> start.bat
-echo     echo Ellenorizze a results\log.html fajlt a reszletekert. >> start.bat
-echo ^) else ^( >> start.bat
-echo     echo. >> start.bat
-echo     echo ========================================= >> start.bat
-echo     echo SZOTAR-ROBI SIKERESEN BEZARULT! >> start.bat
-echo     echo. >> start.bat
-echo     echo Eredmenyek: >> start.bat
-echo     echo - Log: results\log.html >> start.bat
-echo     echo - Report: results\report.html >> start.bat
-echo     echo ========================================= >> start.bat
-echo ^) >> start.bat
-echo. >> start.bat
+echo echo. >> start.bat
+echo echo ===================================================== >> start.bat
+echo echo    A Szotar-Robi alkalmazas fut a bongeszoben! >> start.bat
+echo echo ===================================================== >> start.bat
+echo echo. >> start.bat
+echo echo UTASITASOK: >> start.bat
+echo echo 1. Hasznalja a megnyilt bongeszt a szotar gyakorlashoz >> start.bat
+echo echo 2. Toltse be a kivant lecke fajlt a 'Lecke betoltese' gombbal >> start.bat
+echo echo 3. Gyakoroljon kedvere! >> start.bat
+echo echo 4. LEALILITAS: Kattintson a 'Kilepes' gombra a weboldalon >> start.bat
+echo echo    vagy futtassa a stop_server.bat fajlt >> start.bat
+echo echo. >> start.bat
+echo echo A szerver a hatterben fut: http://localhost:5001 >> start.bat
+echo echo. >> start.bat
 
 
 echo.
 echo =========================================
-echo TELEPITES SIKERES!
+echo TELEPITES SIKERES! v1.13
 echo.
 echo Telepitesi hely: %TARGET_DIR%
 echo.
 echo Telepitett komponensek:
 echo - Robot Framework (automatizalasi keretrendszer)
-echo - Flask (web szerver)
+echo - Flask web szerver (Port: 5001)
 echo - OpenPyXL (Excel fajlok kezelesere)
 echo - Pandas (adatelemzeshez)
+echo - Virtualis kornyezet (.venv)
 echo - Teljes Szotar-Robi alkalmazas
 echo - Web interfesz (webapp\Szotar-Robi.html)
-echo - Flask szerver (flask_server.py)
+echo - Modern Flask szerver (flask_server.py)
 echo - Dokumentacio es futtato scriptok
 echo - start.bat futtato script
 echo.
 echo Hasznalat:
-echo 1. Robot Framework automatikus inditas:
+echo 1. AJANLOTT - Flask szerver automatikus inditas:
 echo    Menjen a telepitesi konyvtarba: %TARGET_DIR%
 echo    Es futtassa: start.bat
+echo    (Automatikusan megnyitja a bongeszt a http://localhost:5001 cimen)
 echo 2. Manual Flask szerver inditas:
-echo    Futtassa: .venv\Scripts\python.exe flask_server.py
+echo    Futtassa: webserver.bat
 echo    Majd nyissa meg: http://localhost:5001
-echo 3. Direkt webapp megnyitas:
-echo    Nyissa meg bonngeszoben: webapp\Szotar-Robi.html
+echo 3. Robot Framework teszt (fejlett hasznalatra):
+echo    Futtassa: .venv\Scripts\robot.exe main.robot
+echo 4. Direkt webapp megnyitas (offline):
+echo    Nyissa meg bongeszoben: webapp\Szotar-Robi.html
 echo.
 echo Dokumentacio: 
 echo - README.md: Altalanos leiras
