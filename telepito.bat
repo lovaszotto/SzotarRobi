@@ -1,6 +1,6 @@
 @echo off
 REM =====================================================
-REM  SZOTAR-ROBI - TELEPITO v1.1
+REM  SZOTAR-ROBI - TELEPITO v1.12
 REM  Robot Framework alapú szótár gyakorló alkalmazás
 REM  Interaktív szókincs fejlesztő rendszer
 REM =====================================================
