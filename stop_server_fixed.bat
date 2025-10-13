@@ -13,7 +13,6 @@ echo.
 
 REM Stop fajl letrehozasa
 echo STOP > stop_server.txt
-
 echo Stop jelzes elkuldve a szervernek.
 echo A szerver hamarosan leal...
 echo.
