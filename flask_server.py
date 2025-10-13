@@ -58,7 +58,7 @@ def shutdown():
 if __name__ == '__main__':
     print(f"Szótár-Robi Flask szerver indítása...")
     print(f"Webapp könyvtár: {WEBAPP_DIR}")
-    print(f"Elérhető lesz: http://localhost:5000")
+    print(f"Elérhető lesz: http://localhost:5001")
     print("A szerver leállításához nyomja meg a Ctrl+C kombinációt")
     
     # Ellenőrizni, hogy létezik-e a webapp könyvtár
@@ -72,4 +72,4 @@ if __name__ == '__main__':
         print(f"HIBA: Szotar-Robi.html nem található: {html_file}")
         sys.exit(1)
         
-    app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False)
+    app.run(host='0.0.0.0', port=5001, debug=False, use_reloader=False)

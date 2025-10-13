@@ -16,12 +16,12 @@ start "Flask Szerver" "%~dp0\.venv\Scripts\python.exe" "%~dp0\flask_server.py"
 REM Varakozas a szerver indulasara
 timeout /t 3 /nobreak >nul
 
-echo Szerver elindult: http://localhost:5000
+echo Szerver elindult: http://localhost:5001
 echo Bongeszo megnyitasa...
 echo.
 
 REM Bongeszo megnyitasa
-start "" "http://localhost:5000"
+start "" "http://localhost:5001"
 
 echo.
 echo =====================================================
@@ -35,5 +35,5 @@ echo 3. Gyakoroljon kedvere!
 echo 4. LEALILITAS: Kattintson a 'Kilepes' gombra a weboldalon
 echo    vagy futtassa a stop_server.bat fajlt
 echo.
-echo A szerver a hatterben fut: http://localhost:5000
+echo A szerver a hatterben fut: http://localhost:5001
 echo.

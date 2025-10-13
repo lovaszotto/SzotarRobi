@@ -257,7 +257,7 @@ echo    Menjen a telepitesi konyvtarba: %TARGET_DIR%
 echo    Es futtassa: start.bat
 echo 2. Manual Flask szerver inditas:
 echo    Futtassa: .venv\Scripts\python.exe flask_server.py
-echo    Majd nyissa meg: http://localhost:5000
+echo    Majd nyissa meg: http://localhost:5001
 echo 3. Direkt webapp megnyitas:
 echo    Nyissa meg bonngeszoben: webapp\Szotar-Robi.html
 echo.
@@ -280,7 +280,7 @@ echo REM ========================================= >> webserver.bat
 echo echo. >> webserver.bat
 echo echo ========================================= >> webserver.bat
 echo echo   SZOTAR-ROBI FLASK SZERVER >> webserver.bat
-echo echo   Port: 5000 >> webserver.bat
+echo echo   Port: 5001 >> webserver.bat
 echo echo ========================================= >> webserver.bat
 echo echo. >> webserver.bat
 echo. >> webserver.bat
@@ -292,7 +292,7 @@ echo     exit /b 1 >> webserver.bat
 echo ^) >> webserver.bat
 echo. >> webserver.bat
 echo echo Flask szerver inditasa... >> webserver.bat
-echo echo Nyissa meg a bongeszoben: http://localhost:5000 >> webserver.bat
+echo echo Nyissa meg a bongeszoben: http://localhost:5001 >> webserver.bat
 echo echo A szerver leallitasahoz nyomja meg a Ctrl+C-t >> webserver.bat
 echo echo. >> webserver.bat
 echo .venv\Scripts\python.exe flask_server.py >> webserver.bat
