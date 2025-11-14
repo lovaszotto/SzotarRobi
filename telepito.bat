@@ -220,7 +220,7 @@ echo echo 4. LEALILITAS: Kattintson a 'Kilepes' gombra a weboldalon >> start.bat
 echo echo    vagy futtassa a stop_server.bat fajlt >> start.bat
 echo echo. >> start.bat
 echo echo A szerver a hatterben fut: http://localhost:5001 >> start.bat
-echo echo exit 0 >> start.bat
+echo  exit 0 >> start.bat
 
 
 echo.
