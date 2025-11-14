@@ -16,7 +16,4 @@ echo STOP > stop_server.txt
 
 echo Stop jelzes elkuldve a szervernek.
 echo A szerver hamarosan leal...
-echo.
-echo Ablak automatikusan bezarul 3 masodperc mulva...
-timeout /t 3 /nobreak >nul
 exit 0

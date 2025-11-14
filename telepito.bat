@@ -302,6 +302,6 @@ echo echo Szerver leallitasi jelzes letrehozasa... >> stop_server.bat
 echo echo stop > stop_server.txt >> stop_server.bat
 echo echo Szerver leallitas jelzes elkuldve. >> stop_server.bat
 echo echo A Robot Framework alkalmazas hamarosan leall. >> stop_server.bat
-echo pause >> stop_server.bat
+echo exit 0 >> stop_server.bat
 
 
