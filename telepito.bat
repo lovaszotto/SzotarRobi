@@ -53,7 +53,7 @@ if errorlevel 1 (
     echo 3. Adja hoza a Python-t a rendszer PATH valtozojához
     echo.
     pause
-    exit /b 1
+    exit 1
 )
 
 echo Python verzio:
@@ -75,7 +75,7 @@ if not exist "%TARGET_DIR%" (
     if errorlevel 1 (
         echo HIBA: Nem sikerult letrehozni a konyvtarat!
         pause
-        exit /b 1
+        exit 1
     )
 ) else (
     echo Konyvtar mar letezik: %TARGET_DIR%
@@ -90,10 +90,10 @@ copy "demo.robot" "%TARGET_DIR%\"
 
 REM Flask szerver es web fajlok masolasa
 copy "flask_server.py" "%TARGET_DIR%\"
-copy "start.bat" "%TARGET_DIR%\"
-copy "start_fixed.bat" "%TARGET_DIR%\"
-copy "stop_server.bat" "%TARGET_DIR%\"
-copy "stop_server_fixed.bat" "%TARGET_DIR%\"
+rem copy "start.bat" "%TARGET_DIR%\"
+rem copy "start_fixed.bat" "%TARGET_DIR%\"
+rem copy "stop_server.bat" "%TARGET_DIR%\"
+rem copy "stop_server_fixed.bat" "%TARGET_DIR%\"
 
 REM Markdown dokumentacio fajlok masolasa
 copy "README.md" "%TARGET_DIR%\"
@@ -113,7 +113,7 @@ if exist "webapp" (
     echo HIBA: webapp konyvtar nem talalhato!
     echo A Szotar-Robi alkalmazas szukseges a webapp konyvtarat.
     pause
-    exit /b 1
+    exit 1
 )
 
 echo Fajlok sikeresen masolva.
@@ -281,7 +281,7 @@ echo REM Ellenorizzuk a Flask szerver megletet >> webserver.bat
 echo if not exist "flask_server.py" ^( >> webserver.bat
 echo     echo HIBA: flask_server.py nem talalhato! >> webserver.bat
 echo     pause >> webserver.bat
-echo     exit /b 1 >> webserver.bat
+echo     exit 1 >> webserver.bat
 echo ^) >> webserver.bat
 echo. >> webserver.bat
 echo echo Flask szerver inditasa... >> webserver.bat
