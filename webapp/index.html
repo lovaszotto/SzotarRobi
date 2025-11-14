@@ -1087,6 +1087,88 @@
             console.log('DOM loaded, alkalmazás inicializálása...');
             initializeApp();
             console.log('Alkalmazás inicializálás befejezve');
+
+            // --- Alapértelmezett lecke betöltése ---
+            const defaultLesson = 'angol_nemet_01_programteszthez.xlsx';
+            fetch('sample_lessons/' + defaultLesson)
+                .then(response => {
+                    if (!response.ok) throw new Error('Nem sikerült letölteni az alapértelmezett leckét!');
+                    return response.arrayBuffer();
+                })
+                .then(arrayBuffer => {
+                    try {
+                        const data = new Uint8Array(arrayBuffer);
+                        const workbook = XLSX.read(data, {type: 'array'});
+                        const sheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[sheetName];
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+
+                        // Fejléc ellenőrzése
+                        const expectedHeader = ['kerdes', 'valasz', 'megj1', 'megj2', 'megj3'];
+                        const actualHeader = (jsonData[0] || []).map(h => (h || '').toString().toLowerCase().trim());
+                        const headerMatch = expectedHeader.every((val, idx) => actualHeader[idx] === val);
+                        const message = document.getElementById('message');
+                        if (!headerMatch || actualHeader.length < expectedHeader.length) {
+                            message.textContent = `Hiba: A fejlécnek pontosan így kell kinéznie: kerdes, valasz, megj1, megj2, megj3 (és ebben a sorrendben)!\nJelenlegi fejléc: ${actualHeader.join(', ')}`;
+                            message.style.backgroundColor = '#f8d7da';
+                            message.style.color = '#721c24';
+                            message.style.border = '1px solid #f5c6cb';
+                            message.style.display = 'block';
+                            return;
+                        }
+
+                        // Excel adatok tárolása
+                        window.currentExcelData = jsonData;
+                        if (window.answeredQuestions) window.answeredQuestions.clear();
+                        window.helyesValaszokSzama = 0;
+                        window.hibasValaszokSzama = 0;
+                        window.osszesKerdesSzam = 0;
+                        if (typeof updateStatisztikak === 'function') updateStatisztikak();
+
+                        // Timer indítása lecke betöltésekor
+                        window.isTimerStopped = false;
+                        if (typeof startTimer === 'function') startTimer();
+
+                        // Automatikus első rekord kiválasztás és kiírás
+                        if (typeof loadRandomQuestion === 'function') loadRandomQuestion();
+
+                        // Ikonok aktiválása lecke betöltése után
+                        if (typeof setIconsActive === 'function') setIconsActive(true);
+
+                        // Fájl nevét kiírjuk
+                        const fileGroupLabel = document.getElementById('fileGroupLabel');
+                        if (fileGroupLabel) fileGroupLabel.textContent = defaultLesson;
+
+                        message.textContent = `Alapértelmezett lecke betöltve: ${defaultLesson} (${jsonData.length} sor)`;
+                        message.style.backgroundColor = '#d1ecf1';
+                        message.style.color = '#0c5460';
+                        message.style.border = '1px solid #bee5eb';
+                        message.style.display = 'block';
+                        setTimeout(() => {
+                            if (message.style.backgroundColor !== 'rgb(248, 215, 218)' && message.style.backgroundColor !== '#f8d7da') {
+                                message.style.display = 'none';
+                                message.style.backgroundColor = '#d4edda';
+                                message.style.color = '#155724';
+                                message.style.border = '1px solid #c3e6cb';
+                            }
+                        }, 4000);
+                    } catch (error) {
+                        const message = document.getElementById('message');
+                        message.textContent = `Hiba az alapértelmezett lecke beolvasásakor: ${error.message}`;
+                        message.style.backgroundColor = '#f8d7da';
+                        message.style.color = '#721c24';
+                        message.style.border = '1px solid #f5c6cb';
+                        message.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    const message = document.getElementById('message');
+                    message.textContent = `Hiba az alapértelmezett lecke letöltésekor: ${error.message}`;
+                    message.style.backgroundColor = '#f8d7da';
+                    message.style.color = '#721c24';
+                    message.style.border = '1px solid #f5c6cb';
+                    message.style.display = 'block';
+                });
         });
         
 
