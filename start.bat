@@ -1,6 +1,11 @@
+
 @echo off
 REM Szotar-Robi alkalmazas indito script
 REM Ez a script kozvetlenul elindija a Flask szervert es megnyitja a bongeszt
+
+REM Valtas a telepitesi konyvtarba (felhasznalo szerint)
+set "currentUser=%USERNAME%"
+cd /d "C:\Users\%currentUser%\MyRobotFramework\InstalledRobots\SzotarRobi\Szó-kikérdező\"
 
 echo.
 echo =====================================================

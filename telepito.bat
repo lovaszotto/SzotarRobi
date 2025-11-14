@@ -26,9 +26,19 @@ echo Adja meg a telepitesi konyvtar eleresi utjat:
 echo (pl: C:\SzotarRobi vagy D:\MyProjects\SzotarRobi)
 echo. 
 REM Automatikus telepitesi konyvtar beallitasa: az aktualis folder nevében a DownloadedRobots kifejezést InstalledRobots-ra cseréljük
+
 set "CURDIR=%CD%"
-set "TARGET_DIR=%CURDIR:DownloadedRobots=InstalledRobots%"
-echo [INFO] Alapértelmezett telepítési konyvtár: %TARGET_DIR%
+set "TARGET_DIR=%CURDIR%"
+echo %CURDIR% | findstr /C:"DownloadedRobots" >nul
+if not errorlevel 1 (
+    set "TARGET_DIR=%CURDIR:DownloadedRobots=InstalledRobots%"
+) else (
+    echo %CURDIR% | findstr /C:"SandboxRobots" >nul
+    if not errorlevel 1 (
+        set "TARGET_DIR=%CURDIR:SandboxRobots=InstalledRobots%"
+    )
+)
+echo [INFO] Alapértelmezett telepítési konyvtár: %TARGET_DIR%"
 
 REM Ha nem letezik a konyvtar, hozzuk letre
 if not exist "%TARGET_DIR%" (
@@ -84,21 +94,24 @@ if not exist "%TARGET_DIR%" (
 echo.
 echo Fajlok masolasa...
 
-REM Szukseges robot fajlok masolasa
-copy "main.robot" "%TARGET_DIR%\"
-copy "demo.robot" "%TARGET_DIR%\"
 
-REM Flask szerver es web fajlok masolasa
-copy "flask_server.py" "%TARGET_DIR%\"
-rem copy "start.bat" "%TARGET_DIR%\"
-rem copy "start_fixed.bat" "%TARGET_DIR%\"
-rem copy "stop_server.bat" "%TARGET_DIR%\"
-rem copy "stop_server_fixed.bat" "%TARGET_DIR%\"
+REM Szukseges robot fajlok masolasa csak ha leteznek
+if exist "main.robot" copy "main.robot" "%TARGET_DIR%\"
+if exist "demo.robot" copy "demo.robot" "%TARGET_DIR%\"
 
-REM Markdown dokumentacio fajlok masolasa
-copy "README.md" "%TARGET_DIR%\"
-copy "HASZNÁLAT.md" "%TARGET_DIR%\"
-copy "ÖSSZEFOGLALÓ.md" "%TARGET_DIR%\"
+
+REM Flask szerver es web fajlok masolasa csak ha leteznek
+if exist "flask_server.py" copy "flask_server.py" "%TARGET_DIR%\"
+rem if exist "start.bat" copy "start.bat" "%TARGET_DIR%\"
+rem if exist "start_fixed.bat" copy "start_fixed.bat" "%TARGET_DIR%\"
+rem if exist "stop_server.bat" copy "stop_server.bat" "%TARGET_DIR%\"
+rem if exist "stop_server_fixed.bat" copy "stop_server_fixed.bat" "%TARGET_DIR%\"
+
+
+REM Markdown dokumentacio fajlok masolasa csak ha leteznek
+if exist "README.md" copy "README.md" "%TARGET_DIR%\"
+if exist "HASZNÁLAT.md" copy "HASZNÁLAT.md" "%TARGET_DIR%\"
+if exist "ÖSSZEFOGLALÓ.md" copy "ÖSSZEFOGLALÓ.md" "%TARGET_DIR%\"
 
 REM Eredmeny fajlok masolasa (ha leteznek)
 if exist "log.html" copy "log.html" "%TARGET_DIR%\"
@@ -182,7 +195,11 @@ echo.
 echo start.bat fajl letrehozasa...
 
 REM Modern start.bat fajl letrehozasa Flask szerver alapon
+
 echo @echo off > start.bat
+echo REM Valtas a telepitesi konyvtarba (felhasznalo szerint) >> start.bat
+echo set "currentUser=%%USERNAME%%" >> start.bat
+echo cd /d "C:\Users\%%currentUser%%\MyRobotFramework\InstalledRobots\SzotarRobi\Szó-kikérdező\" >> start.bat
 echo REM Szotar-Robi alkalmazas indito script >> start.bat
 echo REM Ez a script kozvetlenul elindija a Flask szervert es megnyitja a bongeszt >> start.bat
 echo. >> start.bat
