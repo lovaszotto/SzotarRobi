@@ -4,7 +4,7 @@ REM Ez a script elindija a Robot Framework-ot, amely elindija a Flask szervert e
 
 echo.
 echo =====================================================
-echo           Szotar-Robi Alkalmazas Indito
+echo           Szotar-Robi Alkalmazas Indito v1.2
 echo =====================================================
 echo.
 echo Az alkalmazas inditasa folyamatban...
@@ -15,4 +15,4 @@ REM Robot Framework futtatasa
 
 echo.
 echo Az alkalmazas bezarult.
-echo.
+exit 0
