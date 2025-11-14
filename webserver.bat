@@ -18,6 +18,7 @@ if not exist "flask_server.py" (
 
 echo Flask szerver inditasa...
 echo Nyissa meg a bongeszoben: http://localhost:5001
-echo A szerver leallitasahoz nyomja meg a Ctrl+C-t
 echo.
 .venv\Scripts\python.exe flask_server.py
+exit 0
+

@@ -1,6 +1,6 @@
 @echo off
 REM =====================================================
-REM  SZOTAR-ROBI - TELEPITO v1.13
+REM  SZOTAR-ROBI - TELEPITO v1.2
 REM  Robot Framework alapú szótár gyakorló alkalmazás
 REM  Interaktív szókincs fejlesztő rendszer
 REM  Port frissítve: 5001 (korábban 5000)
@@ -9,7 +9,7 @@ setlocal EnableDelayedExpansion
 
 echo.
 echo =====================================================
-echo   SZOTAR-ROBI TELEPITO v1.13
+echo   SZOTAR-ROBI TELEPITO v1.2
 echo   
 echo   Funkcionalitas:
 echo   - Interaktiv szotar gyakorlas
