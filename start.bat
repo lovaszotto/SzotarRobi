@@ -37,4 +37,4 @@ echo    vagy futtassa a stop_server.bat fajlt
 echo.
 echo A szerver a hatterben fut: http://localhost:5001
 echo.
-exit
+exit 0
