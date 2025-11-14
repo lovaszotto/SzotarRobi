@@ -188,7 +188,7 @@ echo REM Ez a script kozvetlenul elindija a Flask szervert es megnyitja a bonges
 echo. >> start.bat
 echo echo. >> start.bat
 echo echo ===================================================== >> start.bat
-echo echo           Szotar-Robi Alkalmazas Indito >> start.bat
+echo echo           Szotar-Robi Alkalmazas Indito V1.2 >> start.bat
 echo echo ===================================================== >> start.bat
 echo echo. >> start.bat
 echo echo Flask szerver inditasa hatterben... >> start.bat
@@ -220,7 +220,7 @@ echo echo 4. LEALILITAS: Kattintson a 'Kilepes' gombra a weboldalon >> start.bat
 echo echo    vagy futtassa a stop_server.bat fajlt >> start.bat
 echo echo. >> start.bat
 echo echo A szerver a hatterben fut: http://localhost:5001 >> start.bat
-echo echo. >> start.bat
+echo echo exit 0 >> start.bat
 
 
 echo.
@@ -289,7 +289,8 @@ echo echo Nyissa meg a bongeszoben: http://localhost:5001 >> webserver.bat
 echo echo A szerver leallitasahoz nyomja meg a Ctrl+C-t >> webserver.bat
 echo echo. >> webserver.bat
 echo .venv\Scripts\python.exe flask_server.py >> webserver.bat
-
+echo echo. >> webserver.bat
+echo exit 0 >> webserver.bat
 REM stop_server.bat fajl letrehozasa
 echo.
 echo stop_server.bat fajl letrehozasa leallitashoz...

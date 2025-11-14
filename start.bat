@@ -4,7 +4,7 @@ REM Ez a script kozvetlenul elindija a Flask szervert es megnyitja a bongeszt
 
 echo.
 echo =====================================================
-echo           Szotar-Robi Alkalmazas Indito
+echo           Szotar-Robi Alkalmazas Indito V1.2
 echo =====================================================
 echo.
 echo Flask szerver inditasa hatterben...
