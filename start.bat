@@ -1,5 +1,5 @@
-set "currentUser=%USERNAME%" 
-cd /d "C:\Users\%currentUser%\MyRobotFramework\InstalledRobots\SzotarRobi\Szó-kikérdező\" 
+REM Mindig a script saját könyvtárába lépünk
+cd /d "%~dp0"
 REM Szotar-Robi alkalmazas indito script 
 REM Ez a script kozvetlenul elindija a Flask szervert es megnyitja a bongeszt 
  
@@ -22,7 +22,7 @@ echo Bongeszo megnyitasa...
 echo. 
  
 REM Bongeszo megnyitasa 
-start "" "http://localhost:5001" 
+start "" msedge "http://localhost:5001"
  
 echo. 
 echo ===================================================== 

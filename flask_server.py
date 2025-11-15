@@ -4,9 +4,13 @@
 Flask szerver a Szótár-Robi webapp kiszolgálásához
 """
 
-from flask import Flask, send_from_directory, send_file
+from flask import Flask, send_from_directory, send_file, make_response, abort
 import os
 import sys
+
+
+# Mindig a script könyvtárában legyünk
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 app = Flask(__name__)
 
@@ -25,9 +29,17 @@ def serve_static(filename):
 
 @app.route('/sample_lessons/<path:filename>')
 def serve_lessons(filename):
-    """Lecke fájlok kiszolgálása"""
+    """Lecke fájlok kiszolgálása (CORS engedéllyel)"""
     lessons_dir = os.path.join(WEBAPP_DIR, 'sample_lessons')
-    return send_from_directory(lessons_dir, filename)
+    file_path = os.path.join(lessons_dir, filename)
+    if not os.path.isfile(file_path):
+        abort(404)
+    response = make_response(send_from_directory(lessons_dir, filename))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    # XLSX MIME type
+    if filename.lower().endswith('.xlsx'):
+        response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    return response
 
 @app.route('/shutdown', methods=['POST'])
 def shutdown():

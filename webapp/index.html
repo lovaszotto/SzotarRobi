@@ -1129,8 +1129,15 @@
                         window.isTimerStopped = false;
                         if (typeof startTimer === 'function') startTimer();
 
+
                         // Automatikus első rekord kiválasztás és kiírás
                         if (typeof loadRandomQuestion === 'function') loadRandomQuestion();
+
+                        // Kérdés mező frissítése az első kérdéssel (ha van adat)
+                        if (jsonData.length > 1 && jsonData[1][0]) {
+                            const questionInput = document.getElementById('helloWorldInput');
+                            if (questionInput) questionInput.value = jsonData[1][0];
+                        }
 
                         // Ikonok aktiválása lecke betöltése után
                         if (typeof setIconsActive === 'function') setIconsActive(true);
